@@ -5,11 +5,11 @@ import { Reply, stub, tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import http from "node:http";
 import { after, before, test } from "node:test";
-import { config } from "@aihot/backend/config";
-import { closeDb, sql } from "@aihot/backend/db";
-import { stopBoss } from "@aihot/backend/jobs/queue";
-import { mpArticle } from "@aihot/backend/providers/dajiala";
-import { checkMpAccount } from "@aihot/backend/sources/mp";
+import { config } from "@design-space/backend/config";
+import { closeDb, sql } from "@design-space/backend/db";
+import { stopBoss } from "@design-space/backend/jobs/queue";
+import { mpArticle } from "@design-space/backend/providers/dajiala";
+import { checkMpAccount } from "@design-space/backend/sources/mp";
 
 const T = tag();
 const MP_SOURCE = `test-mp-${T}`;

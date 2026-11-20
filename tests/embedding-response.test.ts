@@ -6,9 +6,9 @@
 import { stub, tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { after, test } from "node:test";
-import { closeDb, sql } from "@aihot/backend/db";
-import { EMBEDDING_DIMS, ensureEmbeddings } from "@aihot/backend/providers/embeddings";
-import { ModelOutputError, ReceiptBusyError } from "@aihot/backend/providers/receipts";
+import { closeDb, sql } from "@design-space/backend/db";
+import { EMBEDDING_DIMS, ensureEmbeddings } from "@design-space/backend/providers/embeddings";
+import { ModelOutputError, ReceiptBusyError } from "@design-space/backend/providers/receipts";
 
 let answer: unknown;
 const provider = await stub(() => answer);

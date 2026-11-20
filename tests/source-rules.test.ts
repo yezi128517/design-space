@@ -5,12 +5,12 @@ import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import http from "node:http";
 import { after, before, test } from "node:test";
-import { config } from "@aihot/backend/config";
-import { closeDb, sql } from "@aihot/backend/db";
-import { stopBoss } from "@aihot/backend/jobs/queue";
-import { extractArticleBody } from "@aihot/backend/content/extract";
-import { collectSource } from "@aihot/backend/sources/collect";
-import { updateSource } from "@aihot/backend/admin/sources";
+import { config } from "@design-space/backend/config";
+import { closeDb, sql } from "@design-space/backend/db";
+import { stopBoss } from "@design-space/backend/jobs/queue";
+import { extractArticleBody } from "@design-space/backend/content/extract";
+import { collectSource } from "@design-space/backend/sources/collect";
+import { updateSource } from "@design-space/backend/admin/sources";
 
 const T = tag();
 const LONG = `${"A card label that swallowed the summary of the article it links to, ".repeat(2)}${T}`;

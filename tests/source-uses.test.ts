@@ -6,10 +6,10 @@ import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { after, test } from "node:test";
 import { ZodError } from "zod";
-import { closeDb, sql } from "@aihot/backend/db";
-import { defineServerModule, installModules } from "@aihot/backend/modules";
-import { createSource, listSources, sourceDetail, updateSource } from "@aihot/backend/admin/sources";
-import { adaptIntervals } from "@aihot/backend/sources/collect";
+import { closeDb, sql } from "@design-space/backend/db";
+import { defineServerModule, installModules } from "@design-space/backend/modules";
+import { createSource, listSources, sourceDetail, updateSource } from "@design-space/backend/admin/sources";
+import { adaptIntervals } from "@design-space/backend/sources/collect";
 
 installModules([defineServerModule({
   name: "watcher",

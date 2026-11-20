@@ -119,7 +119,7 @@
 ```bash
 npm run typecheck
 DATABASE_URL=postgres://…/myhot_test npm test     # 库名必须以 _test 或 _ci 结尾，数据库账号要能建库
-npm run build -w @aihot/web && npm run test:web
+npm run build -w @design-space/web && npm run test:web
 node scripts/smoke.ts --base http://localhost:3000   # 站点跑起来以后
 ```
 

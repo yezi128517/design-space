@@ -1,16 +1,16 @@
 import { createHmac } from "node:crypto";
-import { config } from "@aihot/backend/config";
+import { config } from "@design-space/backend/config";
 import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { after, test } from "node:test";
-import { sql, closeDb } from "@aihot/backend/db";
-import { createSource, updateSource } from "@aihot/backend/admin/sources";
-import { overrideFields, rerun, setSeoIndexed, setVisibility } from "@aihot/backend/admin/content";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { publishArticle } from "@aihot/backend/publication/publish";
-import { getBoss, stopBoss } from "@aihot/backend/jobs/queue";
-import { sha256 } from "@aihot/backend/lib/ids";
-import { ADMIN } from "@aihot/site";
+import { sql, closeDb } from "@design-space/backend/db";
+import { createSource, updateSource } from "@design-space/backend/admin/sources";
+import { overrideFields, rerun, setSeoIndexed, setVisibility } from "@design-space/backend/admin/content";
+import { upsertMaterial } from "@design-space/backend/content/materials";
+import { publishArticle } from "@design-space/backend/publication/publish";
+import { getBoss, stopBoss } from "@design-space/backend/jobs/queue";
+import { sha256 } from "@design-space/backend/lib/ids";
+import { ADMIN } from "@design-space/site";
 import { buildApp } from "../apps/api/src/app.ts";
 import { registerAdmin } from "../apps/api/src/routes/admin.ts";
 
@@ -148,7 +148,7 @@ test("bad admin input is a client error and never starts processing", async () =
   config.adminPassword = "admin-corrections-test-password";
   const binding = createHmac("sha256", process.env.SESSION_SECRET!).update(JSON.stringify(["admin-session-v1", "password", config.adminPassword])).digest("hex");
   await sql`INSERT INTO admin_sessions (id_hash, user_id, csrf_token, expires_at, auth_method, auth_binding) VALUES (${sha256(token)}, ${user!.id}, 'review-csrf', now() + interval '1 hour', 'password', ${binding})`;
-  const headers = { cookie: `aihot_admin=${token}`, "x-csrf-token": "review-csrf", "idempotency-key": `invalid-${T}` };
+  const headers = { cookie: `design_space_admin=${token}`, "x-csrf-token": "review-csrf", "idempotency-key": `invalid-${T}` };
   const source = await app.inject({ method: "POST", url: "/api/admin/sources", headers, payload: { id: "bad" } });
   assert.equal(source.statusCode, 400);
   const id = await article();

@@ -5,11 +5,11 @@ import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { after, test } from "node:test";
-import { closeDb, sql } from "@aihot/backend/db";
-import { recallFacts } from "@aihot/backend/events/recall";
+import { closeDb, sql } from "@design-space/backend/db";
+import { recallFacts } from "@design-space/backend/events/recall";
 
 const T = `recall-${tag()}`;
-const title = `${T}模型发布全新版本详细说明`;
+const title = `${T}工具发布全新版本详细说明`;
 after(closeDb);
 
 test("recall preserves window, live-story, membership and latest-analysis evidence", async () => {

@@ -11,9 +11,9 @@ import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { after, before, test } from "node:test";
-import { sql, closeDb } from "@aihot/backend/db";
-import { loadDiscoveryEntries } from "@aihot/backend/publication/sitemap";
-import { SITE } from "@aihot/site";
+import { sql, closeDb } from "@design-space/backend/db";
+import { loadDiscoveryEntries } from "@design-space/backend/publication/sitemap";
+import { SITE } from "@design-space/site";
 import { buildApp } from "../apps/api/src/app.ts";
 
 const app = await buildApp();
@@ -52,7 +52,7 @@ async function report(name: string, r: Report) {
   await sql`INSERT INTO publications (article_id,source_id,title,summary,url,timeline_at,discovered_at,sort_at,selected,eligible,indexable,
       visibility,visible_after,channel,category,body_mode,tags,seo_indexed_at)
     VALUES (${article},${src},'公开报道','一段转述原文的摘要。',${`https://example.org/${article}`},${r.at},${r.at},${r.at},${r.selected ?? true},true,
-      ${r.indexable ?? true},${r.visibility ?? "public"},${r.at},${r.channel ?? "news"},'ai-models',${r.bodyMode ?? (r.body === undefined && !r.article ? "summary" : "full")},
+      ${r.indexable ?? true},${r.visibility ?? "public"},${r.at},${r.channel ?? "news"},'design-tools',${r.bodyMode ?? (r.body === undefined && !r.article ? "summary" : "full")},
       ${r.tags ?? []},${r.manual ? r.at : null})`;
   return article;
 }
@@ -76,7 +76,7 @@ before(async () => {
     (${source},'Focus','rss','T1','editorial'),
     (${sourceB},'Focus B','rss','T1','editorial')`;
   // A topic of three pages, all of it older than the news window.
-  for (let n = 0; n < 45; n++) await report(`topic-${n}`, { at: ago(240 + n), body: long, tags: ["entity:minimax"] });
+  for (let n = 0; n < 45; n++) await report(`topic-${n}`, { at: ago(240 + n), body: long, tags: ["entity:figma"] });
   Object.assign(ids, {
     long: await report("long", { at: ago(1), body: long }),
     noBody: await report("no-body", { at: ago(1) }),
@@ -131,11 +131,11 @@ async function file(name: string) {
 
 test("neither the sitemap nor notifications list a topic's archive pages", async () => {
   const topics = urls(await file("topics"));
-  assert.ok(topics.includes("/topics/minimax"));
-  assert.ok(!topics.some((path) => path.startsWith("/topics/minimax/page/")), "archive pages are reached from the topic page");
+  assert.ok(topics.includes("/topics/figma"));
+  assert.ok(!topics.some((path) => path.startsWith("/topics/figma/page/")), "archive pages are reached from the topic page");
   const inventory = (await loadDiscoveryEntries(new Date())).map((e) => e.loc);
-  assert.ok(inventory.includes("/topics/minimax"));
-  assert.ok(!inventory.some((path) => path.startsWith("/topics/minimax/page/")), "archive pages are noindex: no engine is asked to fetch them");
+  assert.ok(inventory.includes("/topics/figma"));
+  assert.ok(!inventory.some((path) => path.startsWith("/topics/figma/page/")), "archive pages are noindex: no engine is asked to fetch them");
 });
 
 test("a page whose own text is a summary's worth is kept from Google only, and from the sitemap", async () => {

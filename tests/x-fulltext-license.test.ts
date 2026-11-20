@@ -6,13 +6,13 @@ import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { after, test } from "node:test";
-import { closeDb, sql } from "@aihot/backend/db";
-import { updateSource } from "@aihot/backend/admin/sources";
-import { upsertMaterial, type XPostData } from "@aihot/backend/content/materials";
-import { stopBoss } from "@aihot/backend/jobs/queue";
-import { ITEM_COLUMNS, ITEM_FROM, toFeedItemSummary, type ItemRow } from "@aihot/backend/publication/items";
-import { publishArticle, republishSource } from "@aihot/backend/publication/publish";
-import { POLICY } from "@aihot/site";
+import { closeDb, sql } from "@design-space/backend/db";
+import { updateSource } from "@design-space/backend/admin/sources";
+import { upsertMaterial, type XPostData } from "@design-space/backend/content/materials";
+import { stopBoss } from "@design-space/backend/jobs/queue";
+import { ITEM_COLUMNS, ITEM_FROM, toFeedItemSummary, type ItemRow } from "@design-space/backend/publication/items";
+import { publishArticle, republishSource } from "@design-space/backend/publication/publish";
+import { POLICY } from "@design-space/site";
 import { buildApp } from "../apps/api/src/app.ts";
 
 const T = `x-license-${tag()}`;
@@ -62,7 +62,7 @@ async function fixture(options: {
     bodyText: options.bodyStatus === "none" ? null : main, bodyHtml: options.bodyStatus === "none" ? null : `<p>${main}</p>`,
     bodyStatus: options.bodyStatus ?? "ok", xPost, via: "fetch", publishedAt: minuteAgo, discoveredAt: minuteAgo });
   await sql`INSERT INTO analyses (article_id, input_revision, origin, relevance, category, title_zh, summary_zh, reason_zh, tags, score, selected)
-    VALUES (${id}, 1, 'rule', 'pass', 'ai-models', ${`标题-${key}`}, ${summary}, '推荐理由', ${[T, key]}, 90, true)`;
+    VALUES (${id}, 1, 'rule', 'pass', 'design-tools', ${`标题-${key}`}, ${summary}, '推荐理由', ${[T, key]}, 90, true)`;
   if (options.translation !== "missing") {
     await sql`INSERT INTO translations (article_id, revision, body_text, body_html, origin)
       VALUES (${id}, ${options.translation === "stale" ? 0 : 1}, ${zh}, ${`<p>${zh}</p>`}, 'source')`;

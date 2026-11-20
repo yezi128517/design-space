@@ -4,8 +4,8 @@
 import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { after, before, test } from "node:test";
-import { closeDb, sql } from "@aihot/backend/db";
-import { loadPool, publicMatchCondition, searchTerms } from "@aihot/backend/publication/pool";
+import { closeDb, sql } from "@design-space/backend/db";
+import { loadPool, publicMatchCondition, searchTerms } from "@design-space/backend/publication/pool";
 
 const T = `relevance-${tag()}`;
 const now = new Date("2026-01-01T12:00:00Z");
@@ -17,7 +17,7 @@ before(async () => {
 });
 
 async function add(suffix: string, direct: string, body: string, options: {
-  title?: string; age?: number; channel?: "news" | "x"; category?: "ai-models" | "paper"; tags?: string[];
+  title?: string; age?: number; channel?: "news" | "x"; category?: "design-tools" | "design-research"; tags?: string[];
   visibility?: string; eligible?: boolean; future?: boolean; noSearchRow?: boolean;
 } = {}) {
   const at = new Date(+now - (options.age ?? 60) * 1000);
@@ -25,7 +25,7 @@ async function add(suffix: string, direct: string, body: string, options: {
     VALUES (${id(suffix)}, ${T}, ${id(suffix)}, ${`https://example.org/${id(suffix)}`}, ${options.title ?? "neutral"}, ${at}, ${at})`;
   await sql`INSERT INTO publications (article_id, title, source_id, channel, category, tags, url, discovered_at, timeline_at, sort_at,
     selected, eligible, visibility, visible_after, search_text)
-    VALUES (${id(suffix)}, ${options.title ?? "neutral"}, ${T}, ${options.channel ?? "news"}, ${options.category ?? "ai-models"}, ${options.tags ?? []},
+    VALUES (${id(suffix)}, ${options.title ?? "neutral"}, ${T}, ${options.channel ?? "news"}, ${options.category ?? "design-tools"}, ${options.tags ?? []},
       ${`https://example.org/${id(suffix)}`}, ${at}, ${at}, ${at}, ${options.future ?? false}, ${options.eligible ?? true},
       ${options.visibility ?? "public"}, ${options.future ? new Date(+now + 60_000) : at}, ${direct})`;
   if (!options.noSearchRow) await sql`INSERT INTO pool_search (article_id, direct, body) VALUES (${id(suffix)}, ${direct}, ${body})`;
@@ -63,11 +63,11 @@ test("company relevance retains tag-only candidates, boosts and unique totals", 
 });
 
 test("relevance retains combined filters and literal LIKE characters", async () => {
-  await add("filtered", "uv", "uv", { channel: "x", category: "paper", tags: [T] });
-  await add("wrong-channel", "uv", "uv", { category: "paper", tags: [T] });
+  await add("filtered", "uv", "uv", { channel: "x", category: "design-research", tags: [T] });
+  await add("wrong-channel", "uv", "uv", { category: "design-research", tags: [T] });
   await add("wrong-category", "uv", "uv", { channel: "x", tags: [T] });
-  await add("wrong-tag", "uv", "uv", { channel: "x", category: "paper" });
-  const filtered = await loadPool({ ...query("uv"), channel: "x", category: "paper", tag: T });
+  await add("wrong-tag", "uv", "uv", { channel: "x", category: "design-research" });
+  const filtered = await loadPool({ ...query("uv"), channel: "x", category: "design-research", tag: T });
   assert.deepEqual(filtered.items.map(item => item.id), [id("filtered")]);
   await add("literal", "qx%_\\z", "");
   await add("wildcard-lookalike", "qx-anything-z", "");
@@ -75,7 +75,7 @@ test("relevance retains combined filters and literal LIKE characters", async () 
 });
 
 test("search terms split where Han meets a Latin word, not before digits", () => {
-  assert.deepEqual(searchTerms("多模态RAG"), ["多模态", "rag"]);
+  assert.deepEqual(searchTerms("多模态Figma"), ["多模态", "figma"]);
   assert.deepEqual(searchTerms("claude code更新 gpt-5 deepseek v4"), ["claude", "code", "更新", "gpt-5", "deepseek", "v4"]);
   assert.deepEqual(searchTerms("v4版本"), ["v4", "版本"]);
   assert.deepEqual(searchTerms("10月"), ["10月"]);

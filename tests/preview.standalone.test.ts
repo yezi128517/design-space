@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
 import { afterEach, test } from "node:test";
 import Fastify from "fastify";
-import { ADMIN } from "@aihot/site";
-import { config } from "@aihot/backend/config";
-import { installModules, serverModules } from "@aihot/backend/modules";
-import { previewPrincipal } from "@aihot/backend/admin/preview";
+import { ADMIN } from "@design-space/site";
+import { config } from "@design-space/backend/config";
+import { installModules, serverModules } from "@design-space/backend/modules";
+import { previewPrincipal } from "@design-space/backend/admin/preview";
 import { previewHandler, registerAdminAuth } from "../apps/api/src/routes/admin-auth.ts";
 
 const originalDev = config.devAdmin;

@@ -7,12 +7,12 @@ import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { after, before, test } from "node:test";
-import { closeDb, sql } from "@aihot/backend/db";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { publishArticle } from "@aihot/backend/publication/publish";
-import { stopBoss } from "@aihot/backend/jobs/queue";
-import { mergeStoryInto } from "@aihot/backend/events/merge";
-import { linkRelatedStories } from "@aihot/backend/events/consolidate";
+import { closeDb, sql } from "@design-space/backend/db";
+import { upsertMaterial } from "@design-space/backend/content/materials";
+import { publishArticle } from "@design-space/backend/publication/publish";
+import { stopBoss } from "@design-space/backend/jobs/queue";
+import { mergeStoryInto } from "@design-space/backend/events/merge";
+import { linkRelatedStories } from "@design-space/backend/events/consolidate";
 import { buildApp } from "../apps/api/src/app.ts";
 
 const source = `related-evidence-${tag()}`;

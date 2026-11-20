@@ -7,11 +7,11 @@ import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { setTimeout as delay } from "node:timers/promises";
 import { after, before, test } from "node:test";
-import { sql, closeDb } from "@aihot/backend/db";
-import { stopBoss } from "@aihot/backend/jobs/queue";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { markStalePendingReceipts } from "@aihot/backend/providers/receipts";
-import { autoReleaseUnknownReceipts } from "@aihot/backend/operations/recover";
+import { sql, closeDb } from "@design-space/backend/db";
+import { stopBoss } from "@design-space/backend/jobs/queue";
+import { upsertMaterial } from "@design-space/backend/content/materials";
+import { markStalePendingReceipts } from "@design-space/backend/providers/receipts";
+import { autoReleaseUnknownReceipts } from "@design-space/backend/operations/recover";
 
 const T = tag();
 const SOURCE = `test-analyze-kill-${T}`;
@@ -27,8 +27,8 @@ const provider = await stub(async (_hit, request) => {
   }
   const content = step === "prefilter" ? { label: "PASS", reason: "AI model release" }
     : step === "score" ? { attentionScore: SELECTING_SCORE }
-      : step === "structure" ? { category: "ai-models", tags: ["模型发布"], subjects: [], fact: { title: "新模型发布" } }
-        : { itemType: "model_release", authorRole: "principal", tags: ["模型发布"], editorialJudgment: "模型有明确的能力提升", titleZh: `新模型发布 ${T}`, summaryZh: "模型发布并提供了评测和价格。" };
+      : step === "structure" ? { category: "design-tools", tags: ["工具更新"], subjects: [], fact: { title: "新工具发布" } }
+        : { itemType: "tool_release", authorRole: "principal", tags: ["工具更新"], editorialJudgment: "工具有明确的能力提升", titleZh: `新工具发布 ${T}`, summaryZh: "工具发布并提供了评测和价格。" };
   return { id: `stub-${calls.length}`, choices: [{ message: { content: JSON.stringify(content) } }], usage: { prompt_tokens: 10, completion_tokens: 10, total_tokens: 20 } };
 });
 
@@ -39,9 +39,9 @@ const children = new Set<ReturnType<typeof spawn>>();
 // analyze.test.ts also covers pg-boss delivery and graceful queue shutdown.
 function worker(articleId: string) {
   const script = `
-    import { processArticle } from '@aihot/backend/jobs/content';
-    import { stopBoss } from '@aihot/backend/jobs/queue';
-    import { closeDb } from '@aihot/backend/db';
+    import { processArticle } from '@design-space/backend/jobs/content';
+    import { stopBoss } from '@design-space/backend/jobs/queue';
+    import { closeDb } from '@design-space/backend/db';
     try {
       process.send({ result: await processArticle(process.env.TEST_ARTICLE_ID) });
     } catch (error) {
@@ -54,7 +54,7 @@ function worker(articleId: string) {
   `;
   const env: NodeJS.ProcessEnv = {
     ...process.env, TEST_ARTICLE_ID: articleId, MODEL_CALLS_ENABLED: "true", COLLECT_ENABLED: "false",
-    AIHOT_CREDENTIALS_DIR: "/nonexistent-test-credentials", FEISHU_INTERNAL_ENABLED: "false",
+    DESIGN_SPACE_CREDENTIALS_DIR: "/nonexistent-test-credentials", FEISHU_INTERNAL_ENABLED: "false",
   };
   pointModels(provider.url, ["qwen3.7-flash", "glm-5.3-flash", "deepseek-flash", "mimo-v2.6-flash"], env);
   const child = spawn(process.execPath, ["--input-type=module", "-e", script], { cwd: process.cwd(), env, stdio: ["ignore", "ignore", "pipe", "ipc"] });

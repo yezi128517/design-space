@@ -1,26 +1,26 @@
 // Cron-style schedules (Asia/Shanghai), the engine's and then the site's modules'. Each run is recorded in
 // job_runs; missed slots run once.
 import type { PgBoss } from "pg-boss";
-import { ensureQueue, recordRun } from "@aihot/backend/jobs/queue";
-import { serverModules, type Scheduled } from "@aihot/backend/modules";
-import { sweepUnprocessed } from "@aihot/backend/jobs/content";
-import { translatePending } from "@aihot/backend/editorial/translate";
-import { adaptIntervals, scheduleDueSources } from "@aihot/backend/sources/collect";
-import { scheduleMpReconcile } from "@aihot/backend/sources/mp";
-import { followXRenames } from "@aihot/backend/sources/x-renames";
-import { dajialaConfigured } from "@aihot/backend/providers/dajiala";
-import { refreshSourceIcons } from "@aihot/backend/sources/icons";
-import { computeHotRanking, snapshotHeat } from "@aihot/backend/events/hot";
-import { linkRelatedStories } from "@aihot/backend/events/consolidate";
-import { composeDueReports } from "@aihot/backend/reports/compose";
-import { dailyRetention } from "@aihot/backend/operations/retention";
-import { submitIndexNow } from "@aihot/backend/operations/indexnow";
-import { submitBaiduPush } from "@aihot/backend/operations/baidu-push";
-import { checkAlerts, sendDigest } from "@aihot/backend/operations/alerts";
-import { recoverStaleWork } from "@aihot/backend/operations/recover";
-import { forwardPendingFeedback } from "@aihot/backend/operations/feedback";
-import { backupConfigured, runBackup } from "@aihot/backend/operations/backup";
-import { sourceHealthWeekly } from "@aihot/backend/operations/reports";
+import { ensureQueue, recordRun } from "@design-space/backend/jobs/queue";
+import { serverModules, type Scheduled } from "@design-space/backend/modules";
+import { sweepUnprocessed } from "@design-space/backend/jobs/content";
+import { translatePending } from "@design-space/backend/editorial/translate";
+import { adaptIntervals, scheduleDueSources } from "@design-space/backend/sources/collect";
+import { scheduleMpReconcile } from "@design-space/backend/sources/mp";
+import { followXRenames } from "@design-space/backend/sources/x-renames";
+import { dajialaConfigured } from "@design-space/backend/providers/dajiala";
+import { refreshSourceIcons } from "@design-space/backend/sources/icons";
+import { computeHotRanking, snapshotHeat } from "@design-space/backend/events/hot";
+import { linkRelatedStories } from "@design-space/backend/events/consolidate";
+import { composeDueReports } from "@design-space/backend/reports/compose";
+import { dailyRetention } from "@design-space/backend/operations/retention";
+import { submitIndexNow } from "@design-space/backend/operations/indexnow";
+import { submitBaiduPush } from "@design-space/backend/operations/baidu-push";
+import { checkAlerts, sendDigest } from "@design-space/backend/operations/alerts";
+import { recoverStaleWork } from "@design-space/backend/operations/recover";
+import { forwardPendingFeedback } from "@design-space/backend/operations/feedback";
+import { backupConfigured, runBackup } from "@design-space/backend/operations/backup";
+import { sourceHealthWeekly } from "@design-space/backend/operations/reports";
 
 const collecting = process.env.COLLECT_ENABLED === "true";
 

@@ -1,19 +1,19 @@
 // Worker process: queues and schedules for collection, processing, events, reports and ops, and the site's
 // modules (site/modules/server.ts).
-import { assertProductionSecrets } from "@aihot/backend/config";
-import { closeDb } from "@aihot/backend/db";
-import { getBoss, stopBoss, workModuleQueues } from "@aihot/backend/jobs/queue";
-import { installModules } from "@aihot/backend/modules";
-import { SERVER_MODULES } from "@aihot/site/modules/server";
-import { registerContentJobs } from "@aihot/backend/jobs/content";
-import { registerSourceJobs } from "@aihot/backend/jobs/sources";
-import { registerEventJobs } from "@aihot/backend/jobs/events";
-import { registerNotifyJobs } from "@aihot/backend/jobs/notify";
-import { registerPublicationJobs } from "@aihot/backend/jobs/publication";
+import { assertProductionSecrets } from "@design-space/backend/config";
+import { closeDb } from "@design-space/backend/db";
+import { getBoss, stopBoss, workModuleQueues } from "@design-space/backend/jobs/queue";
+import { installModules } from "@design-space/backend/modules";
+import { SERVER_MODULES } from "@design-space/site/modules/server";
+import { registerContentJobs } from "@design-space/backend/jobs/content";
+import { registerSourceJobs } from "@design-space/backend/jobs/sources";
+import { registerEventJobs } from "@design-space/backend/jobs/events";
+import { registerNotifyJobs } from "@design-space/backend/jobs/notify";
+import { registerPublicationJobs } from "@design-space/backend/jobs/publication";
 import { registerSchedules } from "./schedules.ts";
-import { ensureContentTargets } from "@aihot/backend/notify/deliver";
-import { startHeartbeat } from "@aihot/backend/operations/heartbeat";
-import { closeInterruptedRuns } from "@aihot/backend/jobs/runs";
+import { ensureContentTargets } from "@design-space/backend/notify/deliver";
+import { startHeartbeat } from "@design-space/backend/operations/heartbeat";
+import { closeInterruptedRuns } from "@design-space/backend/jobs/runs";
 
 installModules(SERVER_MODULES);
 assertProductionSecrets([["auth", "IMG_PROXY_SIGN_SECRET"]]);

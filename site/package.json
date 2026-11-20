@@ -1,5 +1,5 @@
 {
-  "name": "@aihot/site",
+  "name": "@design-space/site",
   "private": true,
   "type": "module",
   "sideEffects": false,
@@ -11,5 +11,8 @@
     "./modules/web": "./modules/web.ts",
     "./pages/*": "./pages/*",
     "./brand/*": "./brand/*"
+  },
+  "dependencies": {
+    "@design-space/showcase": "*"
   }
 }

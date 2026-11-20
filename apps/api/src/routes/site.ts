@@ -1,24 +1,24 @@
 // First-party site API (/api/site/*). Not public, not versioned, never called /api/v2.
 // Reads through the same public read layer as v1; no cookies are read or set.
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { isCategoryKey, isChannelKey, type CategoryKey, type ChannelKey } from "@aihot/contracts/taxonomy";
-import type { ReportIndexResponse, ReportLatestPage, ReportNavigationResponse, SearchSuggestions, SiteContact } from "@aihot/contracts/site";
-import { InvalidCursorError } from "@aihot/backend/lib/cursor";
-import { exportMarkdown, loadItemDetail } from "@aihot/backend/publication/detail";
-import { itemUrl } from "@aihot/backend/publication/links";
-import { loadPool, SearchBusyError } from "@aihot/backend/publication/pool";
-import { loadTimeline } from "@aihot/backend/publication/timeline";
-import { loadStoryFollowups } from "@aihot/backend/publication/followups";
-import { loadGroupReports } from "@aihot/backend/publication/groups";
-import { hotSearchLinks, loadHotStrip } from "@aihot/backend/publication/hot";
-import { loadChangelog, siteMeta } from "@aihot/backend/site/meta";
-import { loadContact, loadMakerAvatar } from "@aihot/backend/site/contact";
-import { loadSiteStats } from "@aihot/backend/site/stats";
-import { itemAvailability } from "@aihot/backend/publication/availability";
-import { listTopicSummaries, loadTopicPage, topicBrowseLinks } from "@aihot/backend/publication/topics";
+import { isCategoryKey, isChannelKey, type CategoryKey, type ChannelKey } from "@design-space/contracts/taxonomy";
+import type { ReportIndexResponse, ReportLatestPage, ReportNavigationResponse, SearchSuggestions, SiteContact } from "@design-space/contracts/site";
+import { InvalidCursorError } from "@design-space/backend/lib/cursor";
+import { exportMarkdown, loadItemDetail } from "@design-space/backend/publication/detail";
+import { itemUrl } from "@design-space/backend/publication/links";
+import { loadPool, SearchBusyError } from "@design-space/backend/publication/pool";
+import { loadTimeline } from "@design-space/backend/publication/timeline";
+import { loadStoryFollowups } from "@design-space/backend/publication/followups";
+import { loadGroupReports } from "@design-space/backend/publication/groups";
+import { hotSearchLinks, loadHotStrip } from "@design-space/backend/publication/hot";
+import { loadChangelog, siteMeta } from "@design-space/backend/site/meta";
+import { loadContact, loadMakerAvatar } from "@design-space/backend/site/contact";
+import { loadSiteStats } from "@design-space/backend/site/stats";
+import { itemAvailability } from "@design-space/backend/publication/availability";
+import { listTopicSummaries, loadTopicPage, topicBrowseLinks } from "@design-space/backend/publication/topics";
 import { registerFeedback } from "./feedback.ts";
-import { loadHot, loadStoryDetail, resolveStory } from "@aihot/backend/publication/stories";
-import { listReports, loadReport, reportNavigation, loadReportNavigation, loadReportMonth, type ReportKind } from "@aihot/backend/publication/reports";
+import { loadHot, loadStoryDetail, resolveStory } from "@design-space/backend/publication/stories";
+import { listReports, loadReport, reportNavigation, loadReportNavigation, loadReportMonth, type ReportKind } from "@design-space/backend/publication/reports";
 import { looseQuery, QueryError, sendJsonWithEtag, sendProblem } from "../http/respond.ts";
 
 type Handler = (req: FastifyRequest, reply: FastifyReply) => Promise<unknown>;

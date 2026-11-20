@@ -4,14 +4,14 @@ import { analysisStep, SELECTING_SCORE } from "./analysis-steps.ts";
 import assert from "node:assert/strict";
 import { setTimeout as delay } from "node:timers/promises";
 import { after, afterEach, before, test } from "node:test";
-import { closeDb, sql } from "@aihot/backend/db";
-import { groupArticle } from "@aihot/backend/events/group";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { rerun } from "@aihot/backend/admin/content";
-import { processArticle, queueProcessing, registerContentJobs, sweepUnprocessed } from "@aihot/backend/jobs/content";
-import { enqueue, getBoss, QUEUES, stopBoss } from "@aihot/backend/jobs/queue";
-import { recoverStaleWork, releaseReceipt } from "@aihot/backend/operations/recover";
-import { ReceiptUnknownError } from "@aihot/backend/providers/receipts";
+import { closeDb, sql } from "@design-space/backend/db";
+import { groupArticle } from "@design-space/backend/events/group";
+import { upsertMaterial } from "@design-space/backend/content/materials";
+import { rerun } from "@design-space/backend/admin/content";
+import { processArticle, queueProcessing, registerContentJobs, sweepUnprocessed } from "@design-space/backend/jobs/content";
+import { enqueue, getBoss, QUEUES, stopBoss } from "@design-space/backend/jobs/queue";
+import { recoverStaleWork, releaseReceipt } from "@design-space/backend/operations/recover";
+import { ReceiptUnknownError } from "@design-space/backend/providers/receipts";
 
 const T = tag();
 const SOURCE = `recovery-${T}`;
@@ -33,8 +33,8 @@ const provider = await stub(async (_hit, request) => {
   }
   const content = step === "prefilter" ? { label: original ? "BLOCK" : "PASS", reason: "local fixture" }
     : step === "score" ? { attentionScore: SELECTING_SCORE }
-    : step === "structure" ? { category: "ai-models", tags: [], subjects: [], fact: null }
-    : { itemType: "model_release", authorRole: "principal", tags: ["模型发布"], editorialJudgment: "模型能力提升", titleZh: `新判断 ${T}`, summaryZh: "模型发布并提供评测和价格。" };
+    : step === "structure" ? { category: "design-tools", tags: [], subjects: [], fact: null }
+    : { itemType: "tool_release", authorRole: "principal", tags: ["工具更新"], editorialJudgment: "工具能力提升", titleZh: `新判断 ${T}`, summaryZh: "工具发布并提供评测和价格。" };
   return { choices: [{ message: { content: JSON.stringify(content) } }] };
 });
 pointModels(provider.url);

@@ -4,12 +4,12 @@ import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { after, test } from "node:test";
 import { Client, StreamableHTTPClientTransport } from "@modelcontextprotocol/client";
-import { MCP_TOOL_NAMES } from "@aihot/contracts/mcp";
-import { closeDb, sql } from "@aihot/backend/db";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { setSeoIndexed } from "@aihot/backend/admin/content";
-import { publishArticle } from "@aihot/backend/publication/publish";
-import { stopBoss } from "@aihot/backend/jobs/queue";
+import { MCP_TOOL_NAMES } from "@design-space/contracts/mcp";
+import { closeDb, sql } from "@design-space/backend/db";
+import { upsertMaterial } from "@design-space/backend/content/materials";
+import { setSeoIndexed } from "@design-space/backend/admin/content";
+import { publishArticle } from "@design-space/backend/publication/publish";
+import { stopBoss } from "@design-space/backend/jobs/queue";
 import { buildApp } from "../apps/api/src/app.ts";
 
 const key = tag();
@@ -25,7 +25,7 @@ async function fixture(name: string, mode = "editorial", relevance = "pass") {
   const { articleId: id } = await upsertMaterial({ sourceId: source, url: `https://example.org/${source}`,
     title: "Source article", bodyText: "Confirmed material", bodyStatus: "ok", publishedAt: minuteAgo, discoveredAt: minuteAgo, via: "fetch" });
   await sql`INSERT INTO analyses (article_id, input_revision, origin, relevance, title_zh, summary_zh, category, selected, score)
-    VALUES (${id}, 1, 'rule', ${relevance}, '对外标题', '对外摘要', 'ai-models', true, 90)`;
+    VALUES (${id}, 1, 'rule', ${relevance}, '对外标题', '对外摘要', 'design-tools', true, 90)`;
   await publishArticle(id, { releasedAt: minuteAgo });
   return id;
 }

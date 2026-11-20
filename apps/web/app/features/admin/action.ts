@@ -2,14 +2,17 @@
 // stable Idempotency-Key per submitted command, and a revalidation of the page's loaders on success.
 import { useCallback, useRef, useState } from "react";
 import { useRevalidator, useRouteLoaderData } from "react-router";
-import type { AdminMe } from "@aihot/contracts/admin";
+import type { AdminMe } from "@design-space/contracts/admin";
 import { toast } from "./toast";
 
 /** A command the api refused; the message is its explanation. */
 class AdminError extends Error {}
 
 function useAdminMe(): AdminMe {
-  return (useRouteLoaderData("admin-layout") as { me: AdminMe } | undefined)?.me ?? { name: "", csrf: "", dev: false };
+  // The engine's admin pages and the modules' own admin pages each carry the session in their layout.
+  const engine = useRouteLoaderData("admin-layout") as { me: AdminMe } | undefined;
+  const module = useRouteLoaderData("module-admin-layout") as { me: AdminMe } | undefined;
+  return (engine ?? module)?.me ?? { name: "", csrf: "", dev: false };
 }
 
 function newKey() {

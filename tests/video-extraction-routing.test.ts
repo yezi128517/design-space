@@ -2,10 +2,10 @@
 import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { after, test } from "node:test";
-import { sql, closeDb } from "@aihot/backend/db";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { queueProcessing } from "@aihot/backend/jobs/content";
-import { QUEUES, stopBoss } from "@aihot/backend/jobs/queue";
+import { sql, closeDb } from "@design-space/backend/db";
+import { upsertMaterial } from "@design-space/backend/content/materials";
+import { queueProcessing } from "@design-space/backend/jobs/content";
+import { QUEUES, stopBoss } from "@design-space/backend/jobs/queue";
 
 const T = tag();
 after(async () => { await stopBoss(); await closeDb(); });

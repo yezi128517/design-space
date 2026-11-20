@@ -15,13 +15,13 @@ import { editionAt, tag } from "./setup.ts";
 import { after, before, test } from "node:test";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
-import { closeDb, sql } from "@aihot/backend/db";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { stopBoss } from "@aihot/backend/jobs/queue";
-import { publishArticle } from "@aihot/backend/publication/publish";
-import { firstDaily, loadReport, v1Daily } from "@aihot/backend/publication/reports";
-import { composeDaily } from "@aihot/backend/reports/compose";
-import { mergeStoryInto } from "@aihot/backend/events/merge";
+import { closeDb, sql } from "@design-space/backend/db";
+import { upsertMaterial } from "@design-space/backend/content/materials";
+import { stopBoss } from "@design-space/backend/jobs/queue";
+import { publishArticle } from "@design-space/backend/publication/publish";
+import { firstDaily, loadReport, v1Daily } from "@design-space/backend/publication/reports";
+import { composeDaily } from "@design-space/backend/reports/compose";
+import { mergeStoryInto } from "@design-space/backend/events/merge";
 import { buildApp } from "../apps/api/src/app.ts";
 
 const T = tag();
@@ -48,7 +48,7 @@ async function report(title: string, at: Date, score: number, selected: boolean,
     bodyText: `${title} 正文`, bodyStatus: "ok", publishedAt: at, discoveredAt: at, via: "fetch" });
   await sql`UPDATE articles SET grouping_status = 'complete' WHERE id = ${articleId}`;
   await sql`INSERT INTO analyses (article_id, input_revision, origin, relevance, category, title_zh, summary_zh, score, selected)
-    VALUES (${articleId}, 1, 'rule', 'pass', 'ai-models', ${title}, ${`${title}的摘要`}, ${score}, ${selected})`;
+    VALUES (${articleId}, 1, 'rule', 'pass', 'design-tools', ${title}, ${`${title}的摘要`}, ${score}, ${selected})`;
   const published = await publishArticle(articleId, { now: at, releasedAt });
   if (source !== SIGNAL) assert.deepEqual([published?.selected, published?.visibility], [selected, "public"], title);
   return articleId;
@@ -113,9 +113,9 @@ test("a thin issue fills its highlights with the window's best reports it left o
   assert.deepEqual(site.highlights.map((h) => [h.itemId, h.available]), [[best, true], [second, false], [third, true]]);
   assert.equal(site.metrics.sourcesCount, 1);
   assert.equal(site.sections.flatMap((s) => s.items).length, 1);
-  const v1 = (await v1Daily(day))!.report as { highlights?: Array<{ title: string; links: { aihot: string | null } }>; sections: unknown[] };
+  const v1 = (await v1Daily(day))!.report as { highlights?: Array<{ title: string; links: { designSpace: string | null } }>; sections: unknown[] };
   assert.deepEqual(v1.highlights?.map((h) => h.title), ["最值得看的", "刚过门槛的"]);
-  assert.ok(v1.highlights?.[0]?.links.aihot?.endsWith(`/items/${best}`));
+  assert.ok(v1.highlights?.[0]?.links.designSpace?.endsWith(`/items/${best}`));
   const agent = (await app.inject(`/api/v1/agent/daily/${day}`)).body;
   assert.match(agent, /【今日看点】/);
   assert.ok(agent.includes("最值得看的") && agent.includes("刚过门槛的"));

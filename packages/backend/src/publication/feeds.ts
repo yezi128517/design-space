@@ -2,8 +2,8 @@
 // publication time (none when it is unknown). Summary feeds never carry content:encoded; full feeds
 // inline bodies only for sources that explicitly allow redistribution. Titles come from the site's
 // name and categories.
-import { feedCategoryLabel, PUBLIC_API_CATEGORY_KEYS, toPublicApiCategory, type PublicApiCategoryKey } from "@aihot/contracts/taxonomy";
-import { EDITION_WHEN, FEED_COPY, REPORTS, SITE, subjectAfter } from "@aihot/site";
+import { feedCategoryLabel, PUBLIC_API_CATEGORY_KEYS, toPublicApiCategory, type PublicApiCategoryKey } from "@design-space/contracts/taxonomy";
+import { EDITION_WHEN, FEED_COPY, REPORTS, SITE, subjectAfter } from "@design-space/site";
 import { config } from "../config.ts";
 import { sql } from "../db.ts";
 import { escapeXml } from "../lib/text.ts";
@@ -14,7 +14,7 @@ import { textToHtml } from "../content/sanitize.ts";
 import { xArticleBody } from "../content/posts.ts";
 import { publicCategoryCondition, exportTranslation, xView, type ItemRow } from "./items.ts";
 import { publicSourceName } from "./rules.ts";
-import { SELECTION } from "@aihot/industry/selection";
+import { SELECTION } from "@design-space/industry/selection";
 import { browsedCondition, seatedCondition } from "./scope.ts";
 import { dailyUrl, itemUrl, periodUrl, siteUrl } from "./links.ts";
 
@@ -93,7 +93,7 @@ const FEED_IMAGE_SECONDS = 7 * 86400;
  * it quotes, translated too), else a complete Chinese translation of the article, else the original. It
  * ends with an attribution line (also a mark on copies taken from the feed).
  */
-function fullContent(r: FeedRow, aihot: string): string | null {
+function fullContent(r: FeedRow, designSpace: string): string | null {
   let html: string | null = null;
   const x = r.channel === "x" ? xView({ x_post: r.x_post ?? null, x_article: r.x_article ?? null, zh_text: r.zh_text ?? null, quoted_zh: r.quoted_zh ?? null }) : null;
   if (x) {
@@ -117,24 +117,24 @@ function fullContent(r: FeedRow, aihot: string): string | null {
     html = withCover(exportTranslation(r) ?? r.body_html, r.cover, r.body_html);
   }
   if (!html) return null;
-  return `${proxyBodyImages(html, true, FEED_IMAGE_SECONDS)}<p>—— 本文由 ${escapeXml(SITE.name)} 聚合整理，完整版与${escapeXml(subjectAfter("更多", "动态"))}见 <a href="${aihot}">${aihot}</a></p>`;
+  return `${proxyBodyImages(html, true, FEED_IMAGE_SECONDS)}<p>—— 本文由 ${escapeXml(SITE.name)} 聚合整理，完整版与${escapeXml(subjectAfter("更多", "动态"))}见 <a href="${designSpace}">${designSpace}</a></p>`;
 }
 
 function itemXml(r: FeedRow, includeContent: boolean): string {
-  const aihot = itemUrl(r.id);
+  const designSpace = itemUrl(r.id);
   const summary = r.summary ?? "";
-  const description = `<p>${escapeXml(summary)}</p>\n<p>🔗 <a href="${escapeXml(r.url)}">阅读原文</a></p>\n<p>via ${escapeXml(SITE.name)} · <a href="${aihot}">${aihot}</a></p>`;
+  const description = `<p>${escapeXml(summary)}</p>\n<p>🔗 <a href="${escapeXml(r.url)}">阅读原文</a></p>\n<p>via ${escapeXml(SITE.name)} · <a href="${designSpace}">${designSpace}</a></p>`;
   const publicCategory = toPublicApiCategory(r.category);
   const category = publicCategory ? `\n      <category>${escapeXml(feedCategoryLabel(publicCategory))}</category>` : "";
   let content = "";
   if (includeContent && r.syndicate) {
-    const html = fullContent(r, aihot);
+    const html = fullContent(r, designSpace);
     if (html) content = `\n      <content:encoded>${cdata(html)}</content:encoded>`;
   }
   const pubDate = r.published_at ? `\n      <pubDate>${rfc822(r.published_at)}</pubDate>` : "";
   return `    <item>
       <title>${cdata(r.title)}</title>
-      <link>${aihot}</link>
+      <link>${designSpace}</link>
       <description>${cdata(description)}</description>${content}${category}${pubDate}
       <guid isPermaLink="false">${escapeXml(r.id)}</guid>
       <author>${escapeXml(AUTHOR)} (${escapeXml(publicSourceName(r.source_name))})</author>

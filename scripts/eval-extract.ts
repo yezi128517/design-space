@@ -10,8 +10,8 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { parseArgs } from "node:util";
 import { load } from "cheerio";
-import { readable, type PageRules } from "@aihot/backend/content/extract";
-import { guardedFetch, languageHeaders } from "@aihot/backend/lib/http-fetch";
+import { readable, type PageRules } from "@design-space/backend/content/extract";
+import { guardedFetch, languageHeaders } from "@design-space/backend/lib/http-fetch";
 
 interface SavedPage {
   id: string;

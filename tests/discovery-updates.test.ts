@@ -10,11 +10,11 @@ import './setup.ts';
 import assert from 'node:assert/strict';
 import { after, afterEach, test } from 'node:test';
 import { randomUUID } from 'node:crypto';
-import { sql, closeDb } from '@aihot/backend/db';
-import { config } from '@aihot/backend/config';
-import { installModules, type SitemapEntry } from '@aihot/backend/modules';
-import { loadDiscoveryEntries } from '@aihot/backend/publication/sitemap';
-import { submitIndexNow } from '@aihot/backend/operations/indexnow';
+import { sql, closeDb } from '@design-space/backend/db';
+import { config } from '@design-space/backend/config';
+import { installModules, type SitemapEntry } from '@design-space/backend/modules';
+import { loadDiscoveryEntries } from '@design-space/backend/publication/sitemap';
+import { submitIndexNow } from '@design-space/backend/operations/indexnow';
 
 const originalFetch = globalThis.fetch;
 const originalEnabled = config.indexNowSubmitEnabled;
@@ -47,7 +47,7 @@ async function material(id: string, options: { source?: string; future?: boolean
     VALUES (${id},${source},${id},${`https://example.org/${id}`},'公开报道','2026-10-01','2026-10-01','2026-10-01','2026-10-01')`;
   await sql`INSERT INTO publications (article_id,source_id,title,summary,url,timeline_at,discovered_at,sort_at,selected,eligible,indexable,visible_after,updated_at,channel,category)
     VALUES (${id},${source},'公开报道','公开摘要',${`https://example.org/${id}`},'2026-10-01','2026-10-01','2026-10-01',true,true,true,
-      ${options.future ? '2100-01-01' : '2026-10-01'},'2026-10-01','news','ai-models')`;
+      ${options.future ? '2100-01-01' : '2026-10-01'},'2026-10-01','news','design-tools')`;
 }
 
 test('discovery dates follow page content and publication scope', async () => {

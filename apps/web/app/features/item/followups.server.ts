@@ -1,4 +1,4 @@
-import type { SiteItemDetail, StoryFollowupsResponse } from "@aihot/contracts/site";
+import type { SiteItemDetail, StoryFollowupsResponse } from "@design-space/contracts/site";
 import { apiGet } from "../../lib/api.server";
 
 /** 事件后续 in the first HTML: how search engines reach the event page. An event without any answers 404. */

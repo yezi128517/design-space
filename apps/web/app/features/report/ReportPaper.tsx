@@ -8,9 +8,9 @@
 import { IntentLink } from "../../components/ui/IntentLink";
 import { createContext, useContext, useState, type ReactNode } from "react";
 import { Link } from "react-router";
-import { REPORT_NAMES, type ReportCitation, type ReportDetail, type ReportNavigationEntry } from "@aihot/contracts/site";
-import { REPORTS, SEO_TITLES, SITE, subjectAfter, withSubject } from "@aihot/site";
-import { linkMentions, type MentionRun } from "@aihot/contracts/mentions";
+import { REPORT_NAMES, type ReportCitation, type ReportDetail, type ReportNavigationEntry } from "@design-space/contracts/site";
+import { REPORTS, SEO_TITLES, SITE, subjectAfter, withSubject } from "@design-space/site";
+import { linkMentions, type MentionRun } from "@design-space/contracts/mentions";
 import { MentionText } from "../../components/ui/MentionText";
 import { Badge } from "../../components/ui/Badge";
 import { IconArrowLeft, IconArrowRight, IconArrowUpRight } from "../../components/icons";

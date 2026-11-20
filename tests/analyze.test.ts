@@ -8,17 +8,17 @@ import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { setTimeout as delay } from "node:timers/promises";
 import { after, before, test } from "node:test";
-import { closeDb, sql } from "@aihot/backend/db";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { analyzeArticle, buildMaterial, loadAnalyzeInput, normalizeAnalysis, normalizeStructure, runAnalysis, selectionThreshold, StructureSchema, type AnalyzeInputArticle, UNDERSTAND_FLOOR } from "@aihot/backend/editorial/analyze";
-import { createSource, updateSource } from "@aihot/backend/admin/sources";
-import { processArticle, queueProcessing } from "@aihot/backend/jobs/content";
-import { isPoolEligible } from "@aihot/backend/publication/rules";
-import { getBoss, QUEUES, stopBoss } from "@aihot/backend/jobs/queue";
-import { compactAnswerFirstSummary, enforceIdentity, MAX_BODY_CHARS, parseTranslateOutput } from "@aihot/backend/editorial/writing";
-import { READER_WORDING } from "@aihot/industry/wording";
-import { SELECTION } from "@aihot/industry/selection";
-import { ITEM_TYPES } from "@aihot/industry/taxonomy";
+import { closeDb, sql } from "@design-space/backend/db";
+import { upsertMaterial } from "@design-space/backend/content/materials";
+import { analyzeArticle, buildMaterial, loadAnalyzeInput, normalizeAnalysis, normalizeStructure, runAnalysis, selectionThreshold, StructureSchema, type AnalyzeInputArticle, UNDERSTAND_FLOOR } from "@design-space/backend/editorial/analyze";
+import { createSource, updateSource } from "@design-space/backend/admin/sources";
+import { processArticle, queueProcessing } from "@design-space/backend/jobs/content";
+import { isPoolEligible } from "@design-space/backend/publication/rules";
+import { getBoss, QUEUES, stopBoss } from "@design-space/backend/jobs/queue";
+import { compactAnswerFirstSummary, enforceIdentity, MAX_BODY_CHARS, parseTranslateOutput } from "@design-space/backend/editorial/writing";
+import { READER_WORDING } from "@design-space/industry/wording";
+import { SELECTION } from "@design-space/industry/selection";
+import { ITEM_TYPES } from "@design-space/industry/taxonomy";
 
 const T = tag();
 const SOURCE = `test-analyze-${T}`;
@@ -73,11 +73,11 @@ const provider = await stub(async (_hit, req) => {
   }
   if (step === "understand") {
     if (marker === "SENSITIVE") return new Reply(400, { contentFilter: [{ level: 1, role: "user" }], error: { code: "1301", message: "系统检测到输入或生成内容可能包含不安全或敏感内容" } });
-    return answer({ itemType: "model_release", authorRole: "principal", tags: ["模型发布", "开源", "Agent", "不存在的标签"], editorialJudgment: `理由 ${marker}`, titleZh: `理解标题 ${marker}`, summaryZh: `理解摘要 ${marker}。第二句补充一个关键数字。` });
+    return answer({ itemType: "tool_release", authorRole: "principal", tags: ["工具更新", "开源", "Agent", "不存在的标签"], editorialJudgment: `理由 ${marker}`, titleZh: `理解标题 ${marker}`, summaryZh: `理解摘要 ${marker}。第二句补充一个关键数字。` });
   }
   if (step === "structure") {
     if (marker === "BAD_STRUCT") return answer("invalid output");
-    return answer({ category: "ai-models", tags: ["模型发布", "推理"], subjects: ["anthropic", "unknown-co"], scope: "single", fact: { title: `事实 ${marker}`, subject: "某公司", action: "发布", object: "模型", occurredAt: null, evidence: "a lab released a model", conditions: [] } });
+    return answer({ category: "design-tools", tags: ["工具更新", "原型与交互"], subjects: ["anthropic", "unknown-co"], scope: "single", fact: { title: `事实 ${marker}`, subject: "某公司", action: "发布", object: "模型", occurredAt: null, evidence: "a lab released a model", conditions: [] } });
   }
   return answer(`title_zh: 翻译标题 ${marker}\nsummary_zh: 翻译摘要 ${marker}。第二句补充影响。`);
 });
@@ -117,11 +117,11 @@ test("a selected item: prefilter, two scores, the content understanding and the 
   assert.deepEqual([res!.output!.selected, res!.output!.score], [true, T1 + 1], `${T1 + 3} + ${T1 - 1} >= 2 × ${T1}; the mean is shown`);
   assert.deepEqual(calls("CLEAR").sort(), ["prefilter", "score", "score", "structure", "understand"]);
   const r = await row(id);
-  assert.deepEqual([r.title_zh, r.reason_zh, r.category, r.receipt_ids.length], ["理解标题 CLEAR", "理由 CLEAR", "ai-models", 5]);
+  assert.deepEqual([r.title_zh, r.reason_zh, r.category, r.receipt_ids.length], ["理解标题 CLEAR", "理由 CLEAR", "design-tools", 5]);
   // Failure case: the writer's independent labels contradict the structural category.
-  assert.deepEqual(r.tags, ["模型发布", "推理", "Anthropic"], "category and tags come from the same structural judgement, plus the verified subject tag");
+  assert.deepEqual(r.tags, ["工具更新", "原型与交互", "Anthropic"], "category and tags come from the same structural judgement, plus the verified subject tag");
   assert.deepEqual(r.subjects, ["anthropic"]);
-  assert.deepEqual([r.output.writer, r.output.itemType, r.output.prefilter.label, r.output.fact.title], ["understand", "model_release", "PASS", "事实 CLEAR"]);
+  assert.deepEqual([r.output.writer, r.output.itemType, r.output.prefilter.label, r.output.fact.title], ["understand", "tool_release", "PASS", "事实 CLEAR"]);
   assert.equal(r.output.scope, "single");
   assert.equal(r.output.fact.evidence, "a lab released a model");
   const score = requests.find((q) => q.marker === "CLEAR" && q.step === "score")!;
@@ -173,7 +173,7 @@ test("structure retains grounded conditions, rejects invented or unseen quotes, 
     { text: "无限免费", quote: "Unlimited free access for everyone." },
     { text: "不在模型输入里的句子", quote: "This late detail was not sent." },
   ] };
-  const base = { category: "ai-models", tags: [], subjects: [], fact: frame };
+  const base = { category: "design-tools", tags: [], subjects: [], fact: frame };
   const out = normalizeStructure(StructureSchema.parse(base), input);
   assert.ok(buildMaterial(input).includes("Only available in the US."), "a condition after the old 7000-character cutoff reaches the model");
   assert.ok(buildMaterial(input).includes("后文未提供"));
@@ -203,7 +203,7 @@ test("a near-selected item is written like a selected one; below the floor it is
   const low = await analyzeArticle(lowId);
   assert.deepEqual([low!.output!.selected, low!.output!.titleZh, low!.output!.reasonZh], [false, "翻译标题 LOW", null]);
   assert.deepEqual(calls("LOW").sort(), ["prefilter", "score", "score", "structure", "summarize"]);
-  assert.deepEqual((await row(lowId)).tags, ["模型发布", "推理", "Anthropic"], "structure tags");
+  assert.deepEqual((await row(lowId)).tags, ["工具更新", "原型与交互", "Anthropic"], "structure tags");
 });
 
 test("the prefilter's BLOCK stops everything; UNKNOWN with material goes on like PASS", async () => {
@@ -334,17 +334,17 @@ const shutdownProvider = await stub(async (_hit, request) => {
   if (step === "understand" && active.writingAnswer) { active.writingAsked!.open(); await active.writingAnswer.promise; }
   const content = step === "prefilter" ? { label: "PASS", reason: "AI model release" }
     : step === "score" ? { attentionScore: SELECTING_SCORE }
-      : step === "structure" ? { category: "ai-models", tags: ["模型发布"], subjects: [], fact: { title: "新模型发布" } }
-        : { itemType: "model_release", authorRole: "principal", tags: ["模型发布"], editorialJudgment: "模型有明确的能力提升", titleZh: `新模型发布 ${T}`, summaryZh: "模型发布并提供了评测和价格。" };
+      : step === "structure" ? { category: "design-tools", tags: ["工具更新"], subjects: [], fact: { title: "新工具发布" } }
+        : { itemType: "tool_release", authorRole: "principal", tags: ["工具更新"], editorialJudgment: "工具有明确的能力提升", titleZh: `新工具发布 ${T}`, summaryZh: "工具发布并提供了评测和价格。" };
   return { id: `stub-${active.calls.length}`, choices: [{ message: { content: JSON.stringify(content) } }], usage: { prompt_tokens: 10, completion_tokens: 10, total_tokens: 20 } };
 });
 const children = new Set<ReturnType<typeof spawn>>();
 
 function worker(queue: string) {
   const script = `
-    import { getBoss, stopBoss, shutdownSignal, QUEUES } from '@aihot/backend/jobs/queue';
-    import { registerContentJobs } from '@aihot/backend/jobs/content';
-    import { closeDb } from '@aihot/backend/db';
+    import { getBoss, stopBoss, shutdownSignal, QUEUES } from '@design-space/backend/jobs/queue';
+    import { registerContentJobs } from '@design-space/backend/jobs/content';
+    import { closeDb } from '@design-space/backend/db';
     QUEUES.analyze = process.env.TEST_ANALYZE_QUEUE;
     let stopping = false;
     process.on('SIGTERM', async () => {
@@ -359,7 +359,7 @@ function worker(queue: string) {
     await registerContentJobs(await getBoss());
     process.send({ ready: true });
   `;
-  const env = { ...process.env, TEST_ANALYZE_QUEUE: queue, MODEL_CALLS_ENABLED: "true", AIHOT_CREDENTIALS_DIR: "/nonexistent-test-credentials" };
+  const env = { ...process.env, TEST_ANALYZE_QUEUE: queue, MODEL_CALLS_ENABLED: "true", DESIGN_SPACE_CREDENTIALS_DIR: "/nonexistent-test-credentials" };
   pointModels(shutdownProvider.url, undefined, env);
   const child = spawn(process.execPath, ["--input-type=module", "-e", script], { cwd: process.cwd(), env, stdio: ["ignore", "pipe", "pipe", "ipc"] });
   children.add(child);
@@ -460,7 +460,7 @@ test("an unresolved current identity does not start a separate writing request",
 });
 
 const missingArticle = (changes: Partial<AnalyzeInputArticle> = {}): AnalyzeInputArticle => ({
-  id: `missing-${tag()}`, revision: 1, title: "模型发布", url: "https://example.org/news", author: null,
+  id: `missing-${tag()}`, revision: 1, title: "工具发布", url: "https://example.org/news", author: null,
   publishedAt: new Date("2026-10-02T00:00:00Z"), bodyStatus: "unconfirmed", bodyText: null,
   excerpt: null, media: [], xPost: null,
   source: { name: "Fixture", kind: "rss", tier: "T1", firstParty: true }, ...changes,
@@ -481,8 +481,8 @@ test("title-only articles wait for evidence without a model call (no prefilter l
 });
 
 test("real body, feed excerpt and quoted text still receive both scores and writing", async (t) => {
-  for (const changes of [{ bodyText: "来源确认模型发布。" }, { excerpt: "来源确认模型发布。" },
-    { xPost: { text: "支持", quoted: { text: "来源确认模型发布。" } } }]) await t.test(JSON.stringify(changes), async () => {
+  for (const changes of [{ bodyText: "来源确认工具发布。" }, { excerpt: "来源确认工具发布。" },
+    { xPost: { text: "支持", quoted: { text: "来源确认工具发布。" } } }]) await t.test(JSON.stringify(changes), async () => {
     const beforeLen = requests.length;
     const out = normalizeAnalysis(await runFresh(missingArticle(changes)));
     const seen = requests.slice(beforeLen).map((r) => r.step);
@@ -512,7 +512,7 @@ test("a later material revision can be scored after the title-only revision wait
   const input = missingArticle();
   assert.equal(normalizeAnalysis(await runFresh(input)).relevance, "unknown");
   const beforeLen = requests.length;
-  const out = normalizeAnalysis(await runFresh({ ...input, revision: 2, bodyStatus: "ok", bodyText: "来源确认模型发布。" }));
+  const out = normalizeAnalysis(await runFresh({ ...input, revision: 2, bodyStatus: "ok", bodyText: "来源确认工具发布。" }));
   assert.equal(requests.slice(beforeLen).filter((r) => r.step === "score").length, 2);
   assert.equal(out.relevance, "pass");
   assert.equal(out.selected, true);

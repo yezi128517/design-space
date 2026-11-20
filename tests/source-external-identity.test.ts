@@ -4,11 +4,11 @@ import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import http from "node:http";
 import { after, test } from "node:test";
-import { config } from "@aihot/backend/config";
-import { closeDb, sql } from "@aihot/backend/db";
-import { stopBoss } from "@aihot/backend/jobs/queue";
-import { collectSource } from "@aihot/backend/sources/collect";
-import { upsertMaterial } from "@aihot/backend/content/materials";
+import { config } from "@design-space/backend/config";
+import { closeDb, sql } from "@design-space/backend/db";
+import { stopBoss } from "@design-space/backend/jobs/queue";
+import { collectSource } from "@design-space/backend/sources/collect";
+import { upsertMaterial } from "@design-space/backend/content/materials";
 
 const T = tag();
 const published = new Date().toISOString();

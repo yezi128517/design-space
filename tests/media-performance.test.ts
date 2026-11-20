@@ -7,16 +7,16 @@ import { createHash, randomBytes } from "node:crypto";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import sharp from "sharp";
-import { SITE } from "@aihot/site";
+import { SITE } from "@design-space/site";
 
-const dir = await mkdtemp(path.join(tmpdir(), "aihot-media-test-"));
-process.env.AIHOT_DATA_DIR = dir;
+const dir = await mkdtemp(path.join(tmpdir(), "design-space-media-test-"));
+process.env.DESIGN_SPACE_DATA_DIR = dir;
 process.env.ALLOW_PRIVATE_NETWORK_FETCH = "true";
 process.env.MODEL_CALLS_ENABLED = "false";
-const { produceImage } = await import("@aihot/backend/media/images");
-const { renderOg, ogEtag, fallbackFontFiles, FALLBACK_FONTS, OG_TEMPLATE_VERSION } = await import("@aihot/backend/media/og");
-const { posterEtag, renderPoster, POSTER_TEMPLATE_VERSION } = await import("@aihot/backend/media/poster");
-const { xView } = await import("@aihot/backend/publication/items");
+const { produceImage } = await import("@design-space/backend/media/images");
+const { renderOg, ogEtag, fallbackFontFiles, FALLBACK_FONTS, OG_TEMPLATE_VERSION } = await import("@design-space/backend/media/og");
+const { posterEtag, renderPoster, POSTER_TEMPLATE_VERSION } = await import("@design-space/backend/media/poster");
+const { xView } = await import("@design-space/backend/publication/items");
 
 let imageHits = 0;
 let failureHits = 0;
@@ -61,8 +61,8 @@ const base = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
 after(async () => {
   server.closeAllConnections();
   await new Promise<void>((resolve) => server.close(() => resolve()));
-  const { closeDb } = await import("@aihot/backend/db");
-  const { stopBoss } = await import("@aihot/backend/jobs/queue");
+  const { closeDb } = await import("@design-space/backend/db");
+  const { stopBoss } = await import("@design-space/backend/jobs/queue");
   await stopBoss();
   await closeDb();
   await rm(dir, { recursive: true, force: true });
@@ -119,7 +119,7 @@ test("cached oversized SVGs use current renditions without downloading them agai
 // SVG can be much smaller over HTTP than its disk size, and its intrinsic display width is
 // independent of a bitmap's pixel count. Neither may regress just to change the image format.
 test("SVG preparation retains compact transfer and intrinsic display size", async () => {
-  const { resizeImage } = await import("@aihot/backend/media/images");
+  const { resizeImage } = await import("@design-space/backend/media/images");
   const compactTransfer = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080"><rect width="1920" height="1080" fill="#176b75"/><desc>${"compressible metadata ".repeat(10000)}</desc></svg>`);
   const smallDisplay = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="180" height="34"><rect width="180" height="34" fill="#176b75"/><desc>${randomBytes(180000).toString("base64")}</desc></svg>`);
   for (const [name, body] of [["compact-transfer", compactTransfer], ["small-display", smallDisplay]] as const) {
@@ -137,7 +137,7 @@ test("SVG preparation retains compact transfer and intrinsic display size", asyn
 });
 
 test("a retained large SVG still supplies the model's raster thumbnail", async () => {
-  const { firstImagePart } = await import("@aihot/backend/editorial/input");
+  const { firstImagePart } = await import("@design-space/backend/editorial/input");
   const url = `${base}/model-vector`;
   const key = createHash("sha256").update(`thumb|${url}`).digest("hex");
   const file = path.join(dir, "imgcache", key.slice(0, 2), key);
@@ -155,7 +155,7 @@ test("a retained large SVG still supplies the model's raster thumbnail", async (
 });
 
 test("model inputs retain thin images within the provider's minimum dimensions", async () => {
-  const { firstImagePart, loadArticleImageParts } = await import("@aihot/backend/editorial/input");
+  const { firstImagePart, loadArticleImageParts } = await import("@design-space/backend/editorial/input");
   const url = `${base}/separator.png`;
   const narrow = await sharp({ create: { width: 1, height: 80, channels: 3, background: "#176b75" } }).png().toBuffer();
   const loaded = await loadArticleImageParts([url, `data:image/png;base64,${narrow.toString("base64")}`, `${base}/image`]);
@@ -226,7 +226,7 @@ test("successive responsive candidates reuse the completed original download", a
 });
 
 test("responsive URLs and web body candidates retain exact signatures and stable expiry", async () => {
-  const { proxiedImageSet, proxyBodyImages, verifyProxyRequest } = await import("@aihot/backend/media/imgproxy");
+  const { proxiedImageSet, proxyBodyImages, verifyProxyRequest } = await import("@design-space/backend/media/imgproxy");
   const now = Date.parse("2026-09-28T08:00:00Z");
   const candidates = proxiedImageSet("https://example.org/image.png", "card", false, now)!;
   assert.equal(candidates, proxiedImageSet("https://example.org/image.png", "card", false, now + 1000));
@@ -256,7 +256,7 @@ test("responsive URLs and web body candidates retain exact signatures and stable
 test("image HTTP responses keep earlier URLs valid, reject tampering before fetching and do not vary on Accept", async () => {
   const { default: Fastify } = await import("fastify");
   const { registerMedia } = await import("../apps/api/src/routes/media.ts");
-  const { signature } = await import("@aihot/backend/media/imgproxy");
+  const { signature } = await import("@design-space/backend/media/imgproxy");
   const app = Fastify();
   registerMedia(app);
   const url = `${base}/http-image`;
@@ -277,7 +277,7 @@ test("image HTTP responses keep earlier URLs valid, reject tampering before fetc
   const modeless = new URLSearchParams({ u: url, exp, sig: signature(url, "default", exp) });
   assert.notEqual((await app.inject({ url: `/api/img-proxy?${modeless}` })).statusCode, 200);
   // URLs carry 16 hex digits; a wrong one is refused.
-  const { proxiedImage } = await import("@aihot/backend/media/imgproxy");
+  const { proxiedImage } = await import("@design-space/backend/media/imgproxy");
   const short = proxiedImage(url, "card")!;
   assert.match(short, /&sig=[0-9a-f]{16}$/);
   assert.equal((await app.inject({ url: short })).statusCode, 200);
@@ -290,7 +290,7 @@ test("image HTTP responses keep earlier URLs valid, reject tampering before fetc
 test("image validators save unchanged bytes only after signature verification", async () => {
   const { default: Fastify } = await import("fastify");
   const { registerMedia } = await import("../apps/api/src/routes/media.ts");
-  const { signature } = await import("@aihot/backend/media/imgproxy");
+  const { signature } = await import("@design-space/backend/media/imgproxy");
   const app = Fastify();
   registerMedia(app);
   const url = `${base}/validated-image`;
@@ -340,7 +340,7 @@ test("image validators save unchanged bytes only after signature verification", 
 test("an image server's own errors are cached for at most a minute and never beyond the signature", async (t) => {
   const { default: Fastify } = await import("fastify");
   const { registerMedia } = await import("../apps/api/src/routes/media.ts");
-  const { signature } = await import("@aihot/backend/media/imgproxy");
+  const { signature } = await import("@design-space/backend/media/imgproxy");
   const app = Fastify();
   registerMedia(app);
   try {
@@ -371,7 +371,7 @@ test("an image server's own errors are cached for at most a minute and never bey
 test("an image its server refuses or no longer has is not asked for again for hours", async (t) => {
   const { default: Fastify } = await import("fastify");
   const { registerMedia } = await import("../apps/api/src/routes/media.ts");
-  const { signature } = await import("@aihot/backend/media/imgproxy");
+  const { signature } = await import("@design-space/backend/media/imgproxy");
   const app = Fastify();
   registerMedia(app);
   try {
@@ -396,10 +396,10 @@ test("an image its server refuses or no longer has is not asked for again for ho
 test("pending animations expire at caches, then publish the prepared disk rendition without refetching", async (t) => {
   const { default: Fastify } = await import("fastify");
   const { registerMedia } = await import("../apps/api/src/routes/media.ts");
-  const { signature } = await import("@aihot/backend/media/imgproxy");
-  const { convertAnimated } = await import("@aihot/backend/media/images");
-  const { getBoss, QUEUES } = await import("@aihot/backend/jobs/queue");
-  const { sql } = await import("@aihot/backend/db");
+  const { signature } = await import("@design-space/backend/media/imgproxy");
+  const { convertAnimated } = await import("@design-space/backend/media/images");
+  const { getBoss, QUEUES } = await import("@design-space/backend/jobs/queue");
+  const { sql } = await import("@design-space/backend/db");
   const app = Fastify();
   registerMedia(app);
   const url = `${base}/anim.gif`;
@@ -448,7 +448,7 @@ test("pending animations expire at caches, then publish the prepared disk rendit
 test("binary-labelled real images work, but binary-labelled error pages still return 502", async () => {
   const { default: Fastify } = await import("fastify");
   const { registerMedia } = await import("../apps/api/src/routes/media.ts");
-  const { proxiedImage } = await import("@aihot/backend/media/imgproxy");
+  const { proxiedImage } = await import("@design-space/backend/media/imgproxy");
   const app = Fastify();
   registerMedia(app);
   const image = await app.inject({ url: proxiedImage(`${base}/binary-image`, "card")! });
@@ -468,8 +468,8 @@ test("binary-labelled real images work, but binary-labelled error pages still re
 });
 
 test("tracking pixels are omitted from old and new bodies without removing article illustrations", async () => {
-  const { sanitizeBody } = await import("@aihot/backend/content/sanitize");
-  const { proxyBodyImages } = await import("@aihot/backend/media/imgproxy");
+  const { sanitizeBody } = await import("@design-space/backend/content/sanitize");
+  const { proxyBodyImages } = await import("@design-space/backend/media/imgproxy");
   const html = '<p>Article</p><img src="https://ids4.ad.gt/api/v1/ip_match?id=example"><img src="https://secure.adnxs.com/getuid?x=1"><img src="https://example.org/pixel" width="1" height="1"><img src="https://example.org/chart.png" width="800" height="400">';
   for (const body of [sanitizeBody(html), proxyBodyImages(html)]) {
     assert.doesNotMatch(body, /ids4|adnxs|example.org\/pixel/);
@@ -482,9 +482,9 @@ test("tracking pixels are omitted from old and new bodies without removing artic
 // bodies must both stop signing those pages; RSS, Markdown, responsive media and posters must agree.
 // Real thumbnails/icons and existing video links or video elements must keep working.
 test("video pages mislabeled as images are excluded across ingestion and public image outputs", async () => {
-  const { sanitizeBody } = await import("@aihot/backend/content/sanitize");
-  const { markdownBody, bodyToMarkdown } = await import("@aihot/backend/content/markdown");
-  const { proxiedImage, proxiedImageSet, proxyBodyImages } = await import("@aihot/backend/media/imgproxy");
+  const { sanitizeBody } = await import("@design-space/backend/content/sanitize");
+  const { markdownBody, bodyToMarkdown } = await import("@design-space/backend/content/markdown");
+  const { proxiedImage, proxiedImageSet, proxyBodyImages } = await import("@design-space/backend/media/imgproxy");
   const pages = [
     "https://www.youtube.com/watch?v=example&t=1",
     "https://youtube.com/shorts/example",
@@ -529,10 +529,10 @@ test("video pages mislabeled as images are excluded across ingestion and public 
 test("an AVIF variant is signed as its rendition and serves that rendition until a sharper-or-equal, smaller AVIF is prepared", async () => {
   const { default: Fastify } = await import("fastify");
   const { registerMedia } = await import("../apps/api/src/routes/media.ts");
-  const { signature } = await import("@aihot/backend/media/imgproxy");
-  const { convertAvif } = await import("@aihot/backend/media/images");
-  const { QUEUES } = await import("@aihot/backend/jobs/queue");
-  const { sql } = await import("@aihot/backend/db");
+  const { signature } = await import("@design-space/backend/media/imgproxy");
+  const { convertAvif } = await import("@design-space/backend/media/images");
+  const { QUEUES } = await import("@design-space/backend/jobs/queue");
+  const { sql } = await import("@design-space/backend/db");
   const app = Fastify();
   registerMedia(app);
   const url = `${base}/photo.jpg`;
@@ -581,9 +581,9 @@ test("an AVIF variant is signed as its rendition and serves that rendition until
 });
 
 test("web body images offer their responsive set as AVIF variants first; RSS and images without a set are unchanged", async () => {
-  const { proxyBodyImages, verifyProxyRequest } = await import("@aihot/backend/media/imgproxy");
-  const { proxiedRenditions } = await import("@aihot/backend/media/prepare");
-  const { avifCandidates } = await import("@aihot/contracts/site");
+  const { proxyBodyImages, verifyProxyRequest } = await import("@design-space/backend/media/imgproxy");
+  const { proxiedRenditions } = await import("@design-space/backend/media/prepare");
+  const { avifCandidates } = await import("@design-space/contracts/site");
   const html = '<p><img src="https://example.org/wide.png" width="1200" height="600" alt="图"></p>';
   const web = proxyBodyImages(html);
   const picture = web.match(/<picture\b[^>]*><source type="image\/avif" ([^>]+)>(<img\b[^>]+>)<\/picture>/);

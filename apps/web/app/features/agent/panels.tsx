@@ -3,10 +3,10 @@
 // (CopyTag) when it has one.
 import { Fragment, useState } from "react";
 import { Link } from "react-router";
-import { PUBLIC_INTERFACE_VERSION } from "@aihot/contracts/http-policy";
-import { MCP_TOOL_NAMES as T, MCP_TOOLS } from "@aihot/contracts/mcp";
-import { feedCategoryLabel, PUBLIC_API_CATEGORY_KEYS } from "@aihot/contracts/taxonomy";
-import { ACCESS, AGENT, EDITION_WHEN, POLICY, REPORTS, SITE, subjectAfter, withSubject } from "@aihot/site";
+import { PUBLIC_INTERFACE_VERSION } from "@design-space/contracts/http-policy";
+import { MCP_TOOL_NAMES as T, MCP_TOOLS } from "@design-space/contracts/mcp";
+import { feedCategoryLabel, PUBLIC_API_CATEGORY_KEYS } from "@design-space/contracts/taxonomy";
+import { ACCESS, AGENT, EDITION_WHEN, POLICY, REPORTS, SITE, subjectAfter, withSubject } from "@design-space/site";
 import { CodeBlock, CopyButton } from "./CodeBlock";
 import { PillTabs } from "../../components/ui/Tabs";
 import type { AgentPanelProps } from "../../modules";

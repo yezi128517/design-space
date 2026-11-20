@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import type { StoryFollowup, StoryFollowupsResponse, StoryRef } from "@aihot/contracts/site";
+import type { StoryFollowup, StoryFollowupsResponse, StoryRef } from "@design-space/contracts/site";
 import { MoreLink } from "../../components/ui/Page";
 import { relativeTime } from "../../lib/format";
 

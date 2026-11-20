@@ -2,34 +2,62 @@
   "groups": [
     {
       "key": "company",
-      "name": "公司与模型",
-      "blurb": "按厂商追踪模型、产品与公司动态"
+      "name": "厂商与机构",
+      "blurb": "按工具厂商、AI 公司、设计工作室与实验室追踪产品、研究与组织动态"
     },
     {
       "key": "field",
-      "name": "技术方向",
-      "blurb": "按技术领域深挖：Agent、多模态、具身智能……"
+      "name": "方向与会议",
+      "blurb": "按主题深挖：AI 设计工具、交互范式、生成式视觉，以及 CHI、UIST、CSCW、DRS、SIGGRAPH"
     },
     {
       "key": "genre",
-      "name": "内容类型",
-      "blurb": "按体裁浏览：论文、教程、观点、政策……"
+      "name": "内容形态",
+      "blurb": "按体裁浏览：工具更新、论文、会议征稿、教程、观点、政策"
     }
   ],
   "topics": [
+    {
+      "slug": "figma",
+      "name": "Figma",
+      "group": "company",
+      "entityId": "figma",
+      "definition": "Figma 的设计与原型功能、AI 生成能力、设计系统与协作产品更新，以及公司的定价与组织变化。"
+    },
+    {
+      "slug": "adobe",
+      "name": "Adobe",
+      "group": "company",
+      "entityId": "adobe",
+      "aliases": [
+        "Firefly",
+        "Photoshop"
+      ],
+      "definition": "Adobe 的 Firefly 生成模型、Photoshop 与 Illustrator 的 AI 功能、Creative Cloud 与 Express 的产品变化。"
+    },
     {
       "slug": "openai",
       "name": "OpenAI / ChatGPT",
       "group": "company",
       "entityId": "openai",
-      "definition": "OpenAI 的 GPT 系列模型、ChatGPT 与 Sora 产品更新，以及公司战略与人事变化。"
+      "definition": "OpenAI 的模型、ChatGPT 与 Sora 产品更新、界面与交互形态变化，以及公司战略与人事。"
+    },
+    {
+      "slug": "io",
+      "name": "io / Jony Ive 硬件",
+      "group": "company",
+      "entityId": "io",
+      "aliases": [
+        "Jony Ive"
+      ],
+      "definition": "Jony Ive 与 OpenAI 合作的 AI 硬件公司 io 的产品设计、团队与原型进展。"
     },
     {
       "slug": "anthropic",
       "name": "Anthropic / Claude",
       "group": "company",
       "entityId": "anthropic",
-      "definition": "Anthropic 的 Claude 系列模型、Claude Code 更新，以及安全研究与公司动向。"
+      "definition": "Anthropic 的 Claude 模型与产品界面、编码与创意工具更新，以及安全研究和公司动向。"
     },
     {
       "slug": "google",
@@ -37,239 +65,260 @@
       "group": "company",
       "entityId": "google",
       "aliases": [
-        "DeepMind"
+        "DeepMind",
+        "Stitch",
+        "Material Design"
       ],
-      "definition": "Google 与 DeepMind 的 Gemini 模型、Veo 视频生成、前沿研究与各条产品线的 AI 更新。"
+      "definition": "Google 与 DeepMind 的 Gemini、Veo、Stitch 等产品更新，Material 设计语言与前沿研究。"
     },
     {
-      "slug": "deepseek",
-      "name": "DeepSeek",
+      "slug": "apple",
+      "name": "Apple",
       "group": "company",
-      "entityId": "deepseek",
-      "definition": "DeepSeek（深度求索）的模型发布、开源权重、技术报告与 API 价格变化。"
-    },
-    {
-      "slug": "qwen",
-      "name": "千问 Qwen",
-      "group": "company",
-      "entityId": "qwen",
-      "definition": "阿里千问 Qwen 系列的模型发布与开源更新，从旗舰大模型到能装进手机的小模型。"
-    },
-    {
-      "slug": "kimi",
-      "name": "月之暗面 / Kimi",
-      "group": "company",
-      "entityId": "kimi",
-      "aliases": ["Kimi / 月之暗面"],
-      "definition": "月之暗面的 Kimi 产品更新、K 系列开源模型与长文本技术进展。"
-    },
-    {
-      "slug": "minimax",
-      "name": "MiniMax",
-      "group": "company",
-      "entityId": "minimax",
-      "definition": "MiniMax 的 M 系列大模型、语音与多模态能力，以及开源与商业化进展。"
-    },
-    {
-      "slug": "zhipu",
-      "name": "智谱 GLM",
-      "group": "company",
-      "entityId": "zhipu",
-      "definition": "智谱 GLM 系列模型的发布与开源更新，以及编程、推理能力和商业化进展。"
-    },
-    {
-      "slug": "xai",
-      "name": "xAI / Grok",
-      "group": "company",
-      "entityId": "xai",
-      "definition": "马斯克旗下 xAI 的 Grok 模型更新、算力集群建设与 X 平台整合。"
-    },
-    {
-      "slug": "meta",
-      "name": "Meta / Llama",
-      "group": "company",
-      "entityId": "meta",
-      "definition": "Meta 的 Llama 与 Muse 系列模型、超级智能实验室与 Meta AI 产品。"
+      "entityId": "apple",
+      "aliases": [
+        "Vision Pro",
+        "Apple Intelligence"
+      ],
+      "definition": "Apple 的 Apple Intelligence、系统界面与设计语言变化、Vision Pro 空间交互与硬件设计动向。"
     },
     {
       "slug": "microsoft",
       "name": "Microsoft / Copilot",
       "group": "company",
       "entityId": "microsoft",
-      "definition": "微软的 Copilot 系列产品、Azure AI 云服务，以及与 OpenAI 的合作动向。"
+      "definition": "微软的 Copilot 产品与设计工具、Fluent 设计语言、Microsoft Research 与人机交互研究。"
     },
     {
-      "slug": "nvidia",
-      "name": "NVIDIA 英伟达",
+      "slug": "midjourney",
+      "name": "Midjourney",
       "group": "company",
-      "entityId": "nvidia",
-      "definition": "英伟达的 GPU 新品、CUDA 软件生态、机器人平台与 AI 算力供需。"
-    },
-    {
-      "slug": "hugging-face",
-      "name": "Hugging Face",
-      "group": "company",
-      "entityId": "hugging-face",
-      "definition": "Hugging Face 社区的热门开源模型、数据集、工具与榜单变化。"
+      "entityId": "midjourney",
+      "definition": "Midjourney 的图像与视频生成能力更新、版本与参数变化，以及它在设计与创意工作流里的用法。"
     },
     {
       "slug": "cursor",
-      "name": "Cursor",
+      "name": "Cursor / Anysphere",
       "group": "company",
       "entityId": "cursor",
-      "definition": "Cursor（Anysphere）的编辑器与编码 Agent 更新、自研模型与定价变化。"
+      "aliases": [
+        "Anysphere / Cursor"
+      ],
+      "definition": "Cursor（Anysphere）的编辑器与编码智能体更新、界面交互变化与定价。"
     },
     {
-      "slug": "openrouter",
-      "name": "OpenRouter",
+      "slug": "vercel",
+      "name": "Vercel / v0",
       "group": "company",
-      "entityId": "openrouter",
-      "definition": "OpenRouter 平台的新模型上架、价格变化与开发者调用量排行。"
+      "entityId": "vercel",
+      "definition": "Vercel 的 v0 界面生成工具、设计与代码衔接的产品更新与部署方式变化。"
     },
     {
-      "slug": "agent",
-      "name": "Agent 智能体",
-      "group": "field",
-      "tags": [
-        "Agent"
-      ],
-      "definition": "能自己拆解任务、调用工具、一步步把事办完的 AI 智能体：Claude Code、Manus 等应用，各家 Agent 框架与评测。"
+      "slug": "framer",
+      "name": "Framer",
+      "group": "company",
+      "entityId": "framer",
+      "definition": "Framer 的网站与原型设计工具更新、AI 生成能力与团队协作变化。"
     },
     {
-      "slug": "coding",
-      "name": "AI 编码",
-      "group": "field",
-      "tags": [
-        "编码"
-      ],
-      "definition": "用 AI 写代码：编程助手、Vibe Coding、代码模型评测，以及开发方式的变化。"
+      "slug": "canva",
+      "name": "Canva",
+      "group": "company",
+      "entityId": "canva",
+      "definition": "Canva 的视觉创作与协作功能、AI 模板能力、Affinity 产品线与商业化动向。"
     },
     {
-      "slug": "reasoning",
-      "name": "推理能力",
+      "slug": "ideo",
+      "name": "IDEO",
+      "group": "company",
+      "entityId": "ideo",
+      "definition": "IDEO 与 IDEO.org 的设计项目、方法论输出、组织与人才变化，以及公开的设计研究成果。"
+    },
+    {
+      "slug": "mit-media-lab",
+      "name": "MIT Media Lab",
+      "group": "company",
+      "entityId": "mit-media-lab",
+      "definition": "MIT Media Lab 各研究组的原型、设备、交互与创作工具研究，以及成员去向。"
+    },
+    {
+      "slug": "acm",
+      "name": "ACM / SIGCHI",
+      "group": "company",
+      "entityId": "acm",
+      "aliases": [
+        "SIGCHI"
+      ],
+      "definition": "ACM 与 SIGCHI 的会议安排、征稿与评奖、会士与学会声明，以及旗下期刊的专刊征集。"
+    },
+    {
+      "slug": "ai-design-tools",
+      "name": "AI 设计工具",
       "group": "field",
       "tags": [
-        "推理"
+        "Figma 生态",
+        "生成式视觉",
+        "图像视频模型"
       ],
-      "definition": "让大模型先想再答的能力：思维链、推理模型，数学与逻辑评测上的突破和争议。"
+      "definition": "设计软件里的 AI 能力：生成与编辑图像视频、自动排版与配色、生成式设计资产，以及各家工具的能力边界变化。"
+    },
+    {
+      "slug": "ui-generation",
+      "name": "UI 生成与设计转代码",
+      "group": "field",
+      "tags": [
+        "UI 生成",
+        "设计与代码"
+      ],
+      "definition": "从自然语言或设计稿直接生成界面与前端代码：v0、Lovable、Cursor、Figma Make 一类工具的做法与限制。"
+    },
+    {
+      "slug": "design-systems",
+      "name": "设计系统与设计语言",
+      "group": "field",
+      "tags": [
+        "设计系统"
+      ],
+      "definition": "组件库、令牌、主题与多端一致性，AI 参与维护设计系统带来的工作方式变化。"
+    },
+    {
+      "slug": "prototyping",
+      "name": "原型与交互设计",
+      "group": "field",
+      "tags": [
+        "原型与交互",
+        "交互范式"
+      ],
+      "definition": "原型工具、动效与交互模式的演进：从界面点击到对话、智能体与意图驱动的交互形态。"
+    },
+    {
+      "slug": "agent-ux",
+      "name": "智能体与对话式界面",
+      "group": "field",
+      "tags": [
+        "Agent 交互",
+        "对话式界面"
+      ],
+      "definition": "AI 智能体的界面与体验设计：任务委派、审批与可控性、可解释与纠错，以及对话式与混合式界面。"
+    },
+    {
+      "slug": "spatial-3d",
+      "name": "3D、空间与沉浸式",
+      "group": "field",
+      "tags": [
+        "3D 与空间"
+      ],
+      "definition": "3D 与生成式建模、空间计算与沉浸式体验的设计工具和交互做法，包括 XR 与 Vision Pro 一类平台。"
+    },
+    {
+      "slug": "devices",
+      "name": "AI 硬件与新设备",
+      "group": "field",
+      "tags": [
+        "硬件与设备"
+      ],
+      "definition": "AI 原生硬件与设备形态：新形态手机与伴侣设备、智能眼镜、可穿戴与工业设计，以及它们的交互取舍。"
+    },
+    {
+      "slug": "creative-partnership",
+      "name": "人机共创",
+      "group": "field",
+      "tags": [
+        "创意支持",
+        "人机共创"
+      ],
+      "definition": "把 AI 当创作伙伴的做法与工具：发散、草稿、评审与迭代中的分工，以及创作者的真实工作流。"
+    },
+    {
+      "slug": "ux-research",
+      "name": "用户研究与可及性",
+      "group": "field",
+      "tags": [
+        "用户研究",
+        "可及性"
+      ],
+      "definition": "研究方法、测评与洞察如何被 AI 改变，以及无障碍与可及性设计与相关法规。"
     },
     {
       "slug": "multimodal",
-      "name": "多模态",
+      "name": "多模态交互",
       "group": "field",
       "tags": [
         "多模态"
       ],
-      "definition": "文字之外的能力：看懂图片、图文混合理解、音视频输入输出的模型与产品进展。"
+      "definition": "语音、图像、视频与屏幕感知带来的新输入输出方式，以及看懂界面并代动手的软件。"
     },
     {
-      "slug": "image-gen",
-      "name": "图像生成",
+      "slug": "ai-ethics",
+      "name": "AI 伦理与责任设计",
       "group": "field",
       "tags": [
-        "图像生成"
+        "AI 伦理"
       ],
-      "definition": "AI 画图与修图：文生图模型更新、图像编辑能力与创作工具。"
+      "definition": "设计里的安全、对齐、隐私、署名与训练数据争议，以及针对 AI 行为的治理与研究。"
     },
     {
-      "slug": "video",
-      "name": "AI 视频",
+      "slug": "chi",
+      "name": "CHI 人机交互会议",
       "group": "field",
       "tags": [
-        "视频"
+        "CHI"
       ],
-      "definition": "AI 生成和理解视频：文生视频模型、视频编辑工具，以及影视创作的新做法。"
+      "definition": "ACM CHI 的征稿与截止、日程与 workshop、录用与获奖论文、keynote 和评委会动态。"
     },
     {
-      "slug": "voice",
-      "name": "语音与音频",
+      "slug": "uist",
+      "name": "UIST 界面软件与技术",
       "group": "field",
       "tags": [
-        "语音"
+        "UIST"
       ],
-      "definition": "AI 语音与音频：语音合成、实时语音对话、音乐生成与音频理解的模型与产品。"
+      "definition": "ACM UIST 的征稿与日程、录用与获奖系统、演示与新工具原型。"
     },
     {
-      "slug": "embodied",
-      "name": "具身智能",
+      "slug": "cscw",
+      "name": "CSCW 协作与社会计算",
       "group": "field",
       "tags": [
-        "具身智能"
+        "CSCW"
       ],
-      "definition": "装进机器人身体里的 AI：人形机器人、具身基础模型，以及在真实环境里动手干活的能力。"
+      "definition": "ACM CSCW 与 Computers, Communication 与合作、社区和协同工具相关的研究与会议动态。"
     },
     {
-      "slug": "on-device",
-      "name": "端侧 AI",
+      "slug": "drs",
+      "name": "DRS 设计研究学会",
       "group": "field",
       "tags": [
-        "端侧"
+        "DRS"
       ],
-      "definition": "直接跑在手机、电脑等设备上的 AI：小模型、在本机运行模型的工具与端侧芯片。"
+      "definition": "Design Research Society 的 DRS 会议、主题征集、颗粒（Granularity）刊物与设计研究社区动态。"
     },
     {
-      "slug": "open-source",
-      "name": "开源生态",
+      "slug": "siggraph",
+      "name": "SIGGRAPH 计算机图形学",
       "group": "field",
       "tags": [
-        "开源生态",
-        "开源/仓库"
+        "SIGGRAPH"
       ],
-      "definition": "开放权重、能下载下来自己部署的模型，开源框架与 GitHub 上爆火的 AI 项目。"
+      "definition": "ACM SIGGRAPH 与交互式技术、图形与视觉创作工具相关的论文、Tech Arena 与会展动态。"
     },
     {
-      "slug": "engineering",
-      "name": "部署工程",
-      "group": "field",
-      "tags": [
-        "部署/工程"
-      ],
-      "definition": "怎么把模型跑得更快更省钱：推理加速、显存与成本、服务部署与基础设施选型。"
-    },
-    {
-      "slug": "data-training",
-      "name": "数据与训练",
-      "group": "field",
-      "tags": [
-        "数据/训练"
-      ],
-      "definition": "大模型是怎么练出来的：数据集构建、合成数据、预训练与后训练方法、算力与训练成本。"
-    },
-    {
-      "slug": "safety",
-      "name": "安全对齐",
-      "group": "field",
-      "tags": [
-        "安全/对齐"
-      ],
-      "definition": "让 AI 可控、可信、不被滥用：越狱与防御、模型行为研究、安全评测与治理框架。"
-    },
-    {
-      "slug": "mcp",
-      "name": "MCP 与工具调用",
-      "group": "field",
-      "tags": [
-        "MCP/工具调用"
-      ],
-      "definition": "让 AI 连上外部软件和数据：MCP 协议、function calling 工具调用与各类工具集成。"
-    },
-    {
-      "slug": "model-releases",
-      "name": "模型发布",
+      "slug": "tool-updates",
+      "name": "工具更新",
       "group": "genre",
       "tags": [
-        "模型发布"
+        "工具更新"
       ],
-      "definition": "各家新模型的发布、开源与迭代：旗舰更新、开源权重放出、能力与价格变化。"
+      "definition": "设计与 AI 工具的功能上新、版本与定价变化——谁能用、怎么用、变成什么样。"
     },
     {
-      "slug": "product-updates",
-      "name": "产品更新",
+      "slug": "product-launches",
+      "name": "产品发布",
       "group": "genre",
       "tags": [
-        "产品更新"
+        "产品发布"
       ],
-      "definition": "AI 产品与应用的功能上新、改版与商业化——谁家的产品变强了、变贵了、能用了。"
+      "definition": "AI 新产品与体验改版：新的交互形态、界面范式和设备，以及它们的公开发布。"
     },
     {
       "slug": "papers",
@@ -278,16 +327,25 @@
       "tags": [
         "论文/研究"
       ],
-      "definition": "值得读的 AI 论文与研究成果：架构创新、训练方法、能力测量与理论进展。"
+      "definition": "值得读的设计与人机交互论文与研究成果：新方法、新系统、新实验与新的设计发现。"
     },
     {
-      "slug": "benchmarks",
-      "name": "评测基准",
+      "slug": "conferences",
+      "name": "会议与征稿",
       "group": "genre",
       "tags": [
-        "评测/基准"
+        "会议/征稿"
       ],
-      "definition": "模型到底谁更强：Benchmark 评测成绩、评测方法的争议与排行榜变化。"
+      "definition": "会议和期刊的征稿、截止、日程、录用与获奖结果，以及评委会和学会声明。"
+    },
+    {
+      "slug": "open-source",
+      "name": "开源与仓库",
+      "group": "genre",
+      "tags": [
+        "开源/仓库"
+      ],
+      "definition": "开放的设计工具、模型权重、组件库与插件，GitHub 上受关注的交互与创作项目。"
     },
     {
       "slug": "tutorials",
@@ -296,16 +354,25 @@
       "tags": [
         "教程/实践"
       ],
-      "definition": "拿来就能用的实操内容：提示词技巧、工作流搭建、工具用法与踩坑经验。"
+      "definition": "拿来就能用的实操内容：工作流搭建、提示词与工具用法、设计系统落地与项目复盘。"
+    },
+    {
+      "slug": "benchmarks",
+      "name": "评测基准",
+      "group": "genre",
+      "tags": [
+        "评测/基准"
+      ],
+      "definition": "工具与模型的横向比较、生成质量评测、可用性研究和榜单变化。"
     },
     {
       "slug": "opinions",
-      "name": "大佬观点",
+      "name": "观点评论",
       "group": "genre",
       "tags": [
-        "大佬观点"
+        "观点/评论"
       ],
-      "definition": "行业关键人物在想什么：创始人访谈、研究者论战与投资人判断。"
+      "definition": "设计师与研究者在想什么：访谈、评论、方法论主张与对行业走向的判断。"
     },
     {
       "slug": "trends",
@@ -314,7 +381,7 @@
       "tags": [
         "现象/趋势"
       ],
-      "definition": "AI 正在改变什么：大家怎么用 AI、新能力的出现、对社会与市场格局的影响。"
+      "definition": "AI 正在怎样改变设计与软件的样子：大家怎么做设计、职业结构的变化与新的审美。"
     },
     {
       "slug": "industry",
@@ -323,7 +390,7 @@
       "tags": [
         "行业动态"
       ],
-      "definition": "AI 圈的商业大事：融资并购、人事变动、合作与竞争、政策与市场变化。"
+      "definition": "设计与 AI 圈的商业大事：融资并购、人事与组织、工作室变化、合作与竞争。"
     },
     {
       "slug": "policy",
@@ -332,7 +399,7 @@
       "tags": [
         "政策/监管"
       ],
-      "definition": "AI 相关的政策法规与政府监管：立法进展、出口管制与全球治理。"
+      "definition": "与设计和 AI 相关的政策与监管：生成内容的版权与署名、训练数据、无障碍与产品合规。"
     }
   ]
 }

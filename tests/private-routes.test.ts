@@ -1,15 +1,15 @@
 import { createHmac } from "node:crypto";
-import { ADMIN } from "@aihot/site";
-import { SIGN_IN_HOME } from "@aihot/contracts/admin";
-import { config } from "@aihot/backend/config";
+import { ADMIN } from "@design-space/site";
+import { SIGN_IN_HOME } from "@design-space/contracts/admin";
+import { config } from "@design-space/backend/config";
 // Malformed optional client data must not break admin authentication or drop valid ingest entries.
 import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { after, test } from "node:test";
-import { closeDb, sql } from "@aihot/backend/db";
-import { stopBoss } from "@aihot/backend/jobs/queue";
-import { sha256 } from "@aihot/backend/lib/ids";
-import { sessionPrincipal } from "@aihot/backend/admin/auth";
+import { closeDb, sql } from "@design-space/backend/db";
+import { stopBoss } from "@design-space/backend/jobs/queue";
+import { sha256 } from "@design-space/backend/lib/ids";
+import { sessionPrincipal } from "@design-space/backend/admin/auth";
 import { buildApp } from "../apps/api/src/app.ts";
 
 process.env.INGEST_TOKEN = "private-route-test-ingest-token";
@@ -28,13 +28,13 @@ test("an unrelated malformed cookie leaves a real admin session usable without a
   await sql`INSERT INTO admin_sessions (id_hash, user_id, csrf_token, expires_at, auth_method, auth_binding)
             VALUES (${sha256(token)}, ${user!.id}, 'cookie-test-csrf', now() + interval '1 hour', 'password', ${binding})`;
 
-  for (const cookie of ["unrelated=%", "aihot_admin=%; unrelated=%E0%A4", "aihot_admin=forged; unrelated=%"]) {
+  for (const cookie of ["unrelated=%", "design_space_admin=%; unrelated=%E0%A4", "design_space_admin=forged; unrelated=%"]) {
     const denied = await app.inject({ url: "/api/admin/preview", headers: { cookie } });
     assert.equal(denied.statusCode, 401);
     assert.equal(denied.headers["cache-control"], "private, no-store");
   }
 
-  const headers = { cookie: `unrelated=%; aihot_admin=${token}; another=%E0%A4` };
+  const headers = { cookie: `unrelated=%; design_space_admin=${token}; another=%E0%A4` };
   assert.equal((await sessionPrincipal(headers.cookie))?.name, "Cookie test");
   const me = await app.inject({ url: "/api/admin/preview", headers });
   if (!ADMIN) {

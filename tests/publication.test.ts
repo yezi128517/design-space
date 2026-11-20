@@ -8,21 +8,21 @@ import { randomUUID } from "node:crypto";
 import * as cheerio from "cheerio";
 import { marked } from "marked";
 import { after, before, test } from "node:test";
-import { config } from "@aihot/backend/config";
-import { closeDb, sql } from "@aihot/backend/db";
-import { overrideFields, setVisibility } from "@aihot/backend/admin/content";
-import { updateSource } from "@aihot/backend/admin/sources";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { stopBoss } from "@aihot/backend/jobs/queue";
-import { publishArticle, republishSource } from "@aihot/backend/publication/publish";
-import { computeHotRanking } from "@aihot/backend/events/hot";
-import { latestHotRanking } from "@aihot/backend/publication/hot";
-import { itemFeed } from "@aihot/backend/publication/feeds";
-import { loadPool } from "@aihot/backend/publication/pool";
-import { digestReports } from "@aihot/backend/publication/story-evidence";
-import { v1Items } from "@aihot/backend/publication/v1";
-import { SELECTION } from "@aihot/industry/selection";
-import { loadItemShare } from "@aihot/backend/publication/og";
+import { config } from "@design-space/backend/config";
+import { closeDb, sql } from "@design-space/backend/db";
+import { overrideFields, setVisibility } from "@design-space/backend/admin/content";
+import { updateSource } from "@design-space/backend/admin/sources";
+import { upsertMaterial } from "@design-space/backend/content/materials";
+import { stopBoss } from "@design-space/backend/jobs/queue";
+import { publishArticle, republishSource } from "@design-space/backend/publication/publish";
+import { computeHotRanking } from "@design-space/backend/events/hot";
+import { latestHotRanking } from "@design-space/backend/publication/hot";
+import { itemFeed } from "@design-space/backend/publication/feeds";
+import { loadPool } from "@design-space/backend/publication/pool";
+import { digestReports } from "@design-space/backend/publication/story-evidence";
+import { v1Items } from "@design-space/backend/publication/v1";
+import { SELECTION } from "@design-space/industry/selection";
+import { loadItemShare } from "@design-space/backend/publication/og";
 import { buildApp } from "../apps/api/src/app.ts";
 
 const T = tag();
@@ -50,7 +50,7 @@ async function article(): Promise<string> {
     sourceId: SOURCE, url: `https://example.com/${T}-${n}`, title: `Test ${n}`, bodyText: BODY, bodyHtml: `<p>${BODY}</p>`, bodyStatus: "ok", via: "fetch", publishedAt: minuteAgo, discoveredAt: minuteAgo,
   });
   await sql`INSERT INTO analyses (article_id, input_revision, origin, relevance, category, title_zh, summary_zh, reason_zh, score, selected)
-            VALUES (${articleId}, 1, 'rule', 'pass', 'ai-models', ${`标题${n}-${T}`}, ${`SUMMARY-${n}-${T}`}, '理由', 90, true)`;
+            VALUES (${articleId}, 1, 'rule', 'pass', 'design-tools', ${`标题${n}-${T}`}, ${`SUMMARY-${n}-${T}`}, '理由', 90, true)`;
   return articleId;
 }
 
@@ -420,7 +420,7 @@ test("v1 story matches the website's content and fallback ordering", async () =>
   assert.equal(v1.latest, site.latest);
   assert.equal(site.latestReport.id, second);
   assert.deepEqual(v1.reports.map(({ links: { original: _, ...links }, ...r }: any) => ({ ...r, links })), site.timeline.slice(0, 50).map((r: any) => ({ id: r.id, title: r.title, summary: r.summary,
-    source: { name: r.source.name, firstParty: r.source.firstParty }, publishedAt: r.publishedAt, links: { aihot: `${config.siteUrl}/items/${r.id}` } })));
+    source: { name: r.source.name, firstParty: r.source.firstParty }, publishedAt: r.publishedAt, links: { designSpace: `${config.siteUrl}/items/${r.id}` } })));
 });
 
 // An event's public id is kept by search engines and installed clients: once merged, it must lead to the
@@ -522,7 +522,7 @@ test("minimal sync projection preserves snapshot fields, pagination bindings and
   const full = JSON.parse((await get('/api/v1/selected/snapshot?fields=default&limit=1000')).body);
   const minimal = JSON.parse((await get('/api/v1/selected/snapshot?fields=minimal&limit=1000')).body);
   const project = (i: any) => ({ id: i.id, title: i.title, source: i.source, publishedAt: i.publishedAt,
-    discoveredAt: i.discoveredAt, category: i.category, score: i.score, selected: i.selected, links: { aihot: i.links.aihot } });
+    discoveredAt: i.discoveredAt, category: i.category, score: i.score, selected: i.selected, links: { designSpace: i.links.designSpace } });
   assert.deepEqual(minimal.items, full.items.map(project));
   assert.ok(minimal.items.some((i: any) => i.id === id));
   for (const fields of ['default', 'minimal']) {
@@ -658,7 +658,7 @@ test("suppressOriginal keeps compliant Chinese copy selected while withholding r
     discoveredAt: minuteAgo,
   });
   await sql`INSERT INTO analyses (article_id, input_revision, origin, relevance, category, title_zh, summary_zh, reason_zh, score, selected, output)
-            VALUES (${webId}, 1, 'rule', 'pass', 'ai-models', ${`初版标题-${T}`}, ${`初版摘要-${T}`}, '推荐理由', 91, true,
+            VALUES (${webId}, 1, 'rule', 'pass', 'design-tools', ${`初版标题-${T}`}, ${`初版摘要-${T}`}, '推荐理由', 91, true,
                     ${sql.json({ scope: "single", fact: { subject: "Lab", action: "released", object: "Model", conditions: rawToken, occurredAt: null, title: cleanTitle, evidence: rawToken } })})`;
   await sql`INSERT INTO translations (article_id, lang, revision, title, body_html, body_text, complete, origin)
             VALUES (${webId}, 'zh', 1, ${cleanTitle}, ${`<p>译文 ${rawBody}</p>`}, ${`译文 ${rawBody}`}, true, 'model')`;
@@ -761,7 +761,7 @@ test("suppressOriginal keeps compliant Chinese copy selected while withholding r
     } as never,
   });
   await sql`INSERT INTO analyses (article_id, input_revision, origin, relevance, category, title_zh, summary_zh, reason_zh, score, selected, output)
-            VALUES (${xId}, 1, 'model', 'pass', 'ai-products', ${`X合规标题-${T}`}, ${`X合规摘要-${T}`}, '理由', 88, true,
+            VALUES (${xId}, 1, 'model', 'pass', 'design-products', ${`X合规标题-${T}`}, ${`X合规摘要-${T}`}, '理由', 88, true,
                     ${sql.json({ suppressOriginal: true })})`;
   await sql`UPDATE articles SET grouping_status = 'complete' WHERE id = ${xId}`;
   await publishArticle(xId, released());
@@ -821,7 +821,7 @@ test("restoring normal display after a clean update never re-exposes pre-suppres
     discoveredAt: minuteAgo,
   });
   await sql`INSERT INTO analyses (article_id, input_revision, origin, relevance, category, title_zh, summary_zh, reason_zh, score, selected)
-            VALUES (${articleId}, 1, 'model', 'pass', 'ai-models', ${`初版未压制标题-${T}`}, ${`初版摘要-${T}`}, '理由', 92, true)`;
+            VALUES (${articleId}, 1, 'model', 'pass', 'design-tools', ${`初版未压制标题-${T}`}, ${`初版摘要-${T}`}, '理由', 92, true)`;
   await sql`UPDATE articles SET grouping_status = 'complete' WHERE id = ${articleId}`;
   await publishArticle(articleId, released());
 
@@ -830,20 +830,20 @@ test("restoring normal display after a clean update never re-exposes pre-suppres
   await sql`INSERT INTO articles (id, source_id, identity_key, url, title, grouping_status, discovered_at, timeline_at, published_at)
             VALUES (${lowId}, ${SOURCE}, ${lowId}, ${`https://example.com/${lowId}`}, 'Anchor first', 'complete', ${minuteAgo}, ${minuteAgo}, ${minuteAgo})`;
   await sql`INSERT INTO analyses (article_id, input_revision, origin, relevance, category, title_zh, summary_zh, reason_zh, score, selected)
-            VALUES (${lowId}, 1, 'model', 'pass', 'ai-models', 'Anchor first zh', '摘要', '理由', 90, true)`;
+            VALUES (${lowId}, 1, 'model', 'pass', 'design-tools', 'Anchor first zh', '摘要', '理由', 90, true)`;
   await publishArticle(lowId, released());
   const v1Page1 = JSON.parse((await get("/api/v1/selected/snapshot?fields=default&limit=1")).body);
   assert.ok(v1Page1.nextPage);
 
   // v2: downgraded to suppressOriginal = true.
   await sql`INSERT INTO analyses (article_id, input_revision, origin, relevance, category, title_zh, summary_zh, reason_zh, score, selected, output)
-            VALUES (${articleId}, 1, 'model', 'pass', 'ai-models', ${cleanZhV2}, ${`压制期摘要-${T}`}, '理由', 92, true, ${sql.json({ suppressOriginal: true })})`;
+            VALUES (${articleId}, 1, 'model', 'pass', 'design-tools', ${cleanZhV2}, ${`压制期摘要-${T}`}, '理由', 92, true, ${sql.json({ suppressOriginal: true })})`;
   await publishArticle(articleId, released());
 
   // v3: source updates its raw title/body to clean text, passes review, and restores suppressOriginal = false.
   await sql`UPDATE articles SET revision = 2, title = ${cleanRawTitle}, body_text = 'clean updated body', body_html = '<p>clean updated body</p>' WHERE id = ${articleId}`;
   await sql`INSERT INTO analyses (article_id, input_revision, origin, relevance, category, title_zh, summary_zh, reason_zh, score, selected, output)
-            VALUES (${articleId}, 2, 'model', 'pass', 'ai-models', ${cleanZhV3}, ${`更新后摘要-${T}`}, '理由', 92, true, ${sql.json({ suppressOriginal: false })})`;
+            VALUES (${articleId}, 2, 'model', 'pass', 'design-tools', ${cleanZhV3}, ${`更新后摘要-${T}`}, '理由', 92, true, ${sql.json({ suppressOriginal: false })})`;
   await publishArticle(articleId, released());
 
   const [pubAfter] = await sql<{ suppress_original: boolean; original_title: string | null }[]>`

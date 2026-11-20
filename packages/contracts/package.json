@@ -1,12 +1,12 @@
 {
-  "name": "@aihot/contracts",
+  "name": "@design-space/contracts",
   "private": true,
   "type": "module",
   "exports": {
     "./*": "./src/*.ts"
   },
   "dependencies": {
-    "@aihot/industry": "*",
-    "@aihot/site": "*"
+    "@design-space/industry": "*",
+    "@design-space/site": "*"
   }
 }

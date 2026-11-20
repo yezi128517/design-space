@@ -3,9 +3,9 @@
 import { stub, tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { after, beforeEach, test } from "node:test";
-import { closeDb, sql } from "@aihot/backend/db";
-import { checkWorkerHeartbeat } from "@aihot/backend/operations/watch";
-import { sendAlert } from "@aihot/backend/notify/feishu";
+import { closeDb, sql } from "@design-space/backend/db";
+import { checkWorkerHeartbeat } from "@design-space/backend/operations/watch";
+import { sendAlert } from "@design-space/backend/notify/feishu";
 
 const T = tag();
 const keys = ["heartbeat.worker", "watchdog.worker"];

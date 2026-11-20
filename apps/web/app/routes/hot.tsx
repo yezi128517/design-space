@@ -1,10 +1,10 @@
 import { useLoaderData } from "react-router";
 import type { Route } from "./+types/hot";
 import { IntentLink } from "../components/ui/IntentLink";
-import type { HotEntryView, HotResponse } from "@aihot/contracts/site";
-import { beijingDate } from "@aihot/contracts/time";
-import { shortAddresses } from "@aihot/contracts/addresses";
-import { SEO_TITLES, SITE, subjectAfter, withSubject } from "@aihot/site";
+import type { HotEntryView, HotResponse } from "@design-space/contracts/site";
+import { beijingDate } from "@design-space/contracts/time";
+import { shortAddresses } from "@design-space/contracts/addresses";
+import { SEO_TITLES, SITE, subjectAfter, withSubject } from "@design-space/site";
 import { cachedPage, loadOr404 } from "../lib/api.server";
 import { pageReuse } from "../lib/page-reuse";
 import { archiveLd, breadcrumbLd, pageMeta } from "../lib/seo";

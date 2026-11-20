@@ -1,11 +1,11 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Await, isRouteErrorResponse, Link, useAsyncError, useLoaderData, useNavigate, useRevalidator, type ClientLoaderFunctionArgs } from "react-router";
 import type { Route } from "./+types/item";
-import { REPORT_NAMES, reportDateLabel, type FeedItemSummary, type SiteItemDetail, type StoryFollowupsResponse } from "@aihot/contracts/site";
-import { CATEGORY_LABELS } from "@aihot/contracts/taxonomy";
-import { ITEM_COPY, SITE, withSubject } from "@aihot/site";
-import { linkMentions } from "@aihot/contracts/mentions";
-import { addressRuns } from "@aihot/contracts/addresses";
+import { REPORT_NAMES, reportDateLabel, type FeedItemSummary, type SiteItemDetail, type StoryFollowupsResponse } from "@design-space/contracts/site";
+import { CATEGORY_LABELS } from "@design-space/contracts/taxonomy";
+import { ITEM_COPY, SITE, withSubject } from "@design-space/site";
+import { linkMentions } from "@design-space/contracts/mentions";
+import { addressRuns } from "@design-space/contracts/addresses";
 import { cachedPage, loadOr404 } from "../lib/api.server";
 import { loadFollowups } from "../features/item/followups.server";
 import { pageReuse } from "../lib/page-reuse";

@@ -1,0 +1,14 @@
+{
+  "name": "@design-space/showcase",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./web": "./web.tsx",
+    "./*": "./*.ts"
+  },
+  "dependencies": {
+    "@design-space/backend": "*",
+    "@design-space/contracts": "*",
+    "@design-space/site": "*"
+  }
+}

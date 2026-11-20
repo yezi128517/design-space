@@ -1,8 +1,8 @@
 // Public read layer, item level. Every exit (site API, v1, RSS, MCP, sitemap) reads
 // items through these columns and views; which rows are public is decided by scope.ts.
-import { CATEGORY_KEYS, toPublicApiCategory, type CategoryKey, type ChannelKey, type PublicApiCategoryKey } from "@aihot/contracts/taxonomy";
-import { STORY_INDEX_MIN_SOURCES, type FeedItemSummary, type ItemSummary, type MediaView, type XPostView } from "@aihot/contracts/site";
-import { POLICY } from "@aihot/site";
+import { CATEGORY_KEYS, toPublicApiCategory, type CategoryKey, type ChannelKey, type PublicApiCategoryKey } from "@design-space/contracts/taxonomy";
+import { STORY_INDEX_MIN_SOURCES, type FeedItemSummary, type ItemSummary, type MediaView, type XPostView } from "@design-space/contracts/site";
+import { POLICY } from "@design-space/site";
 import { sql, type Db } from "../db.ts";
 import { isChineseText } from "../lib/text.ts";
 import { isEmptyOrLinkOnly, withXArticle } from "../content/posts.ts";

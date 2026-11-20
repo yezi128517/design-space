@@ -4,13 +4,13 @@
 import { Reply, stub, tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { after, before, test } from "node:test";
-import { config } from "@aihot/backend/config";
-import { closeDb, sql, type Tx } from "@aihot/backend/db";
-import { shutdownSignal, stopBoss } from "@aihot/backend/jobs/queue";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { collectSource, collectXShard, scheduleDueSources } from "@aihot/backend/sources/collect";
-import { refreshSourceIcons } from "@aihot/backend/sources/icons";
-import { planXShards, shardQuery, selfThreadHandle, fetchXSearch } from "@aihot/backend/sources/x";
+import { config } from "@design-space/backend/config";
+import { closeDb, sql, type Tx } from "@design-space/backend/db";
+import { shutdownSignal, stopBoss } from "@design-space/backend/jobs/queue";
+import { upsertMaterial } from "@design-space/backend/content/materials";
+import { collectSource, collectXShard, scheduleDueSources } from "@design-space/backend/sources/collect";
+import { refreshSourceIcons } from "@design-space/backend/sources/icons";
+import { planXShards, shardQuery, selfThreadHandle, fetchXSearch } from "@design-space/backend/sources/x";
 
 const T = tag();
 const HANDLES = [`sa${T}`, `sb${T}`, `sc${T}`];

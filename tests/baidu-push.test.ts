@@ -14,10 +14,10 @@ import './setup.ts';
 import assert from 'node:assert/strict';
 import { after, afterEach, test } from 'node:test';
 import { randomUUID } from 'node:crypto';
-import { sql, closeDb } from '@aihot/backend/db';
-import { config } from '@aihot/backend/config';
-import { installModules, type SitemapEntry } from '@aihot/backend/modules';
-import { submitBaiduPush } from '@aihot/backend/operations/baidu-push';
+import { sql, closeDb } from '@design-space/backend/db';
+import { config } from '@design-space/backend/config';
+import { installModules, type SitemapEntry } from '@design-space/backend/modules';
+import { submitBaiduPush } from '@design-space/backend/operations/baidu-push';
 
 const originalFetch = globalThis.fetch;
 after(closeDb);
@@ -165,7 +165,7 @@ async function material(id: string, at: string, source = 'baidu-editorial') {
   await sql`INSERT INTO articles (id,source_id,identity_key,url,title,published_at,timeline_at,discovered_at,updated_at)
     VALUES (${id},${source},${id},${`https://example.org/${id}`},'公开报道',${at},${at},${at},${at})`;
   await sql`INSERT INTO publications (article_id,source_id,title,summary,url,timeline_at,discovered_at,sort_at,selected,eligible,indexable,visible_after,updated_at,channel,category)
-    VALUES (${id},${source},'公开报道','公开摘要',${`https://example.org/${id}`},${at},${at},${at},true,true,true,${at},${at},'news','ai-models')`;
+    VALUES (${id},${source},'公开报道','公开摘要',${`https://example.org/${id}`},${at},${at},${at},true,true,true,${at},${at},'news','design-tools')`;
 }
 
 test('the report goes first, then pages that answer lasting searches, then stories and single articles, newer before older', async () => {

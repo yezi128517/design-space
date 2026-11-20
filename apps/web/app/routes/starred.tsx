@@ -1,8 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
-import type { ItemAvailability } from "@aihot/contracts/site";
-import { shortAddresses } from "@aihot/contracts/addresses";
-import { SITE } from "@aihot/site";
+import type { ItemAvailability } from "@design-space/contracts/site";
+import { shortAddresses } from "@design-space/contracts/addresses";
+import { SITE } from "@design-space/site";
 import { Presence } from "../components/ui/Presence";
 import { edgeTtl } from "../lib/api.server";
 import { pageMeta } from "../lib/seo";

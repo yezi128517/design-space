@@ -1,10 +1,10 @@
-import { assertProductionSecrets, config } from "@aihot/backend/config";
-import { closeDb } from "@aihot/backend/db";
-import { installModules } from "@aihot/backend/modules";
-import { SERVER_MODULES } from "@aihot/site/modules/server";
-import { ADMIN, DEPLOYMENT } from "@aihot/site";
-import { startHeartbeat } from "@aihot/backend/operations/heartbeat";
-import { startWorkerWatchdog } from "@aihot/backend/operations/watch";
+import { assertProductionSecrets, config } from "@design-space/backend/config";
+import { closeDb } from "@design-space/backend/db";
+import { installModules } from "@design-space/backend/modules";
+import { SERVER_MODULES } from "@design-space/site/modules/server";
+import { ADMIN, DEPLOYMENT } from "@design-space/site";
+import { startHeartbeat } from "@design-space/backend/operations/heartbeat";
+import { startWorkerWatchdog } from "@design-space/backend/operations/watch";
 import { buildApp } from "./app.ts";
 
 installModules(SERVER_MODULES);

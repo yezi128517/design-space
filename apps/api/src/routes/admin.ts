@@ -2,20 +2,20 @@
 // Every route goes through adminHandler (session + CSRF); manual changes are audited in the modules.
 import { readFile } from "node:fs/promises";
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import type { AdminMe, AdminSourceUpdate } from "@aihot/contracts/admin";
-import { actorOf } from "@aihot/backend/admin/auth";
-import { navCounts } from "@aihot/backend/admin/navigation";
-import { listAudit } from "@aihot/backend/audit";
-import { importSelectBenchRun, listSelectBenchRuns, selectBenchRun } from "@aihot/backend/admin/selectbench";
-import { modelsOverview, switchModel } from "@aihot/backend/admin/models";
-import { contentChain, overrideFields, rerun, searchContent, setSeoIndexed, setVisibility } from "@aihot/backend/admin/content";
-import { detachFromFact, mergeStories } from "@aihot/backend/events/corrections";
-import { banFeedbackEmail, banSource, eraseFeedback, feedbackScreenshot, listFeedback, unbanSource, updateFeedback } from "@aihot/backend/admin/feedback";
-import { requeueFailedArticles, runsOverview } from "@aihot/backend/admin/runs";
-import { resolveDelivery } from "@aihot/backend/notify/deliver";
-import { releaseReceipt } from "@aihot/backend/operations/recover";
-import { replaceContactQr, setTargetEnabled, settingsOverview, updateBudget } from "@aihot/backend/admin/settings";
-import { createSource, fetchNow, listSources, previewSource, previewStoredSource, sourceDetail, updateSource } from "@aihot/backend/admin/sources";
+import type { AdminMe, AdminSourceUpdate } from "@design-space/contracts/admin";
+import { actorOf } from "@design-space/backend/admin/auth";
+import { navCounts } from "@design-space/backend/admin/navigation";
+import { listAudit } from "@design-space/backend/audit";
+import { importSelectBenchRun, listSelectBenchRuns, selectBenchRun } from "@design-space/backend/admin/selectbench";
+import { modelsOverview, switchModel } from "@design-space/backend/admin/models";
+import { contentChain, overrideFields, rerun, searchContent, setSeoIndexed, setVisibility } from "@design-space/backend/admin/content";
+import { detachFromFact, mergeStories } from "@design-space/backend/events/corrections";
+import { banFeedbackEmail, banSource, eraseFeedback, feedbackScreenshot, listFeedback, unbanSource, updateFeedback } from "@design-space/backend/admin/feedback";
+import { requeueFailedArticles, runsOverview } from "@design-space/backend/admin/runs";
+import { resolveDelivery } from "@design-space/backend/notify/deliver";
+import { releaseReceipt } from "@design-space/backend/operations/recover";
+import { replaceContactQr, setTargetEnabled, settingsOverview, updateBudget } from "@design-space/backend/admin/settings";
+import { createSource, fetchNow, listSources, previewSource, previewStoredSource, sourceDetail, updateSource } from "@design-space/backend/admin/sources";
 import { sendProblem } from "../http/respond.ts";
 import { adminHandler } from "./admin-auth.ts";
 
@@ -60,7 +60,7 @@ export function registerAdmin(app: FastifyInstance) {
   app.post("/api/admin/content/:id/seo", adminHandler(async (req, reply, admin) => orNotFound(req, reply, await setSeoIndexed(param(req, "id"), body(req) as never, actorOf(admin)))));
   app.post("/api/admin/content/:id/override", adminHandler(async (req, _reply, admin) => overrideFields(param(req, "id"), body(req) as never, actorOf(admin))));
   app.post("/api/admin/content/:id/rerun", adminHandler(async (req, reply, admin) => {
-    const b = body<import("@aihot/contracts/admin").AdminRerun>(req);
+    const b = body<import("@design-space/contracts/admin").AdminRerun>(req);
     const requestId = String(req.headers["idempotency-key"] ?? "");
     return orNotFound(req, reply, await rerun(param(req, "id"), b.step, requestId, actorOf(admin), { preview: b.preview, version: b.version }));
   }));

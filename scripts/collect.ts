@@ -1,10 +1,10 @@
 // Runs collection for given sources now (development / operations helper).
 // node --env-file=.env scripts/collect.ts rss-openai-news rss-hugging-face ...
-import { closeDb } from "@aihot/backend/db";
-import { stopBoss } from "@aihot/backend/jobs/queue";
-import { installModules } from "@aihot/backend/modules";
-import { collectSource } from "@aihot/backend/sources/collect";
-import { SERVER_MODULES } from "@aihot/site/modules/server";
+import { closeDb } from "@design-space/backend/db";
+import { stopBoss } from "@design-space/backend/jobs/queue";
+import { installModules } from "@design-space/backend/modules";
+import { collectSource } from "@design-space/backend/sources/collect";
+import { SERVER_MODULES } from "@design-space/site/modules/server";
 
 installModules(SERVER_MODULES);
 try {

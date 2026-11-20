@@ -1,9 +1,9 @@
 import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { after, test } from "node:test";
-import { closeDb, sql } from "@aihot/backend/db";
-import { beijingDate, beijingMidnight, monthDay } from "@aihot/contracts/time";
-import { countTimelineDays, loadTimeline } from "@aihot/backend/publication/timeline";
+import { closeDb, sql } from "@design-space/backend/db";
+import { beijingDate, beijingMidnight, monthDay } from "@design-space/contracts/time";
+import { countTimelineDays, loadTimeline } from "@design-space/backend/publication/timeline";
 import { monthDay as pageMonthDay, monthDayTime } from "../apps/web/app/lib/format.ts";
 
 after(closeDb);

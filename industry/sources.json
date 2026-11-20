@@ -1,18 +1,106 @@
 {
-  "$comment": "示范信源：首次启动时导入（scripts/seed.ts），已存在的不会被覆盖。之后在后台“信源”里新建、修改和暂停。字段说明见 docs/customize.md。",
+  "$comment": "信源清单 2026-11-20 逐个实抓验证过（v0.2.0 共 45 个，全部抓到条目；抓取走 .env 里的 EGRESS_PROXY_URL）。学术一线：ACM TOCHI／Interactions／PACMHCI（CHI、CSCW 论文）用 dl.acm.org 的 eTOC 订阅（RDF 格式，框架支持）；She Ji、Design Studies 用 ScienceDirect 的期刊订阅；International Journal of Design 是开放获取（CC BY），按当期目录页的选择器抓，每条直接指向论文原文，页面上同时有 PDF 与 HTML 全文链接；arXiv cs.HC 升到 T1、cs.GR 升到 T1_5。作品与赛事：设计竞赛网（赛事征集）、红点奖 Magazine（获奖动态与作品页）、数英项目（国内设计作品，卡片自带发布日期）。kind=web_list 的站不发订阅，按列表页选择器抓取，对方改版后抓不到就在后台“信源”里更新选择器；detail.maxFetches 是每轮允许补读详情页的数量，不设则一篇都不补。iF 设计奖、站酷、Dribbble、普象的作品目录要 JS 渲染或登录，小红书要登录，微信公众号要接第三方付费采集（docs/sources.md），这些都没有可稳定抓取的订阅／列表，本站不把它们当信源；它们的优秀作品在“作品”页（后台“作品”）手工录入，附原文链接或视频。Figma、Adobe、Canva、Framer、Webflow、Cursor、SIGCHI、机器之心只有网页或需要 JS 渲染，已从清单去掉，它们的产品动态由 dezeen、designboom、The Verge、TechCrunch、WIRED 等媒体报道覆盖。列表页拿不到发布时间的（优设网、MIT Media Lab、设计竞赛网、红点 Magazine 等），公开页面按发现时间排序，不影响日报和周报。字段说明见 docs/customize.md；本文件只在首次启动时导入，已有的信源不会被覆盖，日常增改在后台“信源”页做。",
   "sources": [
+    {
+      "id": "web-sketch-blog",
+      "name": "Sketch Blog",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.sketch.com/blog/",
+        "allowUrlPrefixes": [
+          "https://www.sketch.com/blog/"
+        ],
+        "denyUrlPrefixes": [
+          "https://www.sketch.com/blog/learn-design",
+          "https://www.sketch.com/blog/inside-sketch",
+          "https://www.sketch.com/blog/latest-features",
+          "https://www.sketch.com/blog/made-with-sketch"
+        ],
+        "_designSpace": {
+          "initialBackfillLimit": 8
+        },
+        "detail": {
+          "maxFetches": 8
+        }
+      },
+      "tier": "T1_5",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "官方",
+        "设计工具"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
     {
       "id": "rss-openai-news",
       "name": "OpenAI News",
       "kind": "rss",
       "config": {
         "feedUrl": "https://openai.com/news/rss.xml",
-        "_aihot": {
+        "_designSpace": {
           "initialBackfillLimit": 8
         }
       },
-      "tier": "T1",
+      "tier": "T1_5",
       "owner_entity_id": "openai",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "官方"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "web-anthropic-news",
+      "name": "Anthropic News",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.anthropic.com/news",
+        "allowUrlPrefixes": [
+          "https://www.anthropic.com/news/"
+        ],
+        "denyUrlPrefixes": [
+          "https://www.anthropic.com/news/announcements",
+          "https://www.anthropic.com/news/features",
+          "https://www.anthropic.com/news/company",
+          "https://www.anthropic.com/news/education",
+          "https://www.anthropic.com/news/policies",
+          "https://www.anthropic.com/news/research",
+          "https://www.anthropic.com/news/responsible-scaling-policy"
+        ],
+        "_designSpace": {
+          "initialBackfillLimit": 8
+        },
+        "detail": {
+          "maxFetches": 8
+        }
+      },
+      "tier": "T1_5",
+      "owner_entity_id": "anthropic",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "官方"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-google-blog",
+      "name": "Google Blog",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://blog.google/rss/",
+        "_designSpace": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1_5",
+      "owner_entity_id": "google",
       "participation_mode": "editorial",
       "interval_minutes": 120,
       "tags": [
@@ -27,16 +115,17 @@
       "kind": "rss",
       "config": {
         "feedUrl": "https://deepmind.google/blog/rss.xml",
-        "_aihot": {
+        "_designSpace": {
           "initialBackfillLimit": 8
         }
       },
-      "tier": "T1",
+      "tier": "T2",
       "owner_entity_id": "google",
       "participation_mode": "editorial",
-      "interval_minutes": 120,
+      "interval_minutes": 180,
       "tags": [
-        "官方"
+        "官方",
+        "研究"
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
@@ -47,14 +136,59 @@
       "kind": "rss",
       "config": {
         "feedUrl": "https://research.google/blog/rss/",
-        "_aihot": {
+        "_designSpace": {
           "initialBackfillLimit": 8
         }
       },
-      "tier": "T1",
+      "tier": "T2",
       "owner_entity_id": "google",
       "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "研究"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-apple-newsroom",
+      "name": "Apple Newsroom",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.apple.com/newsroom/rss-feed.rss",
+        "_designSpace": {
+          "initialBackfillLimit": 8
+        },
+        "detail": {
+          "maxFetches": 8
+        }
+      },
+      "tier": "T1_5",
+      "owner_entity_id": "apple",
+      "participation_mode": "editorial",
       "interval_minutes": 120,
+      "tags": [
+        "官方",
+        "硬件"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-microsoft-research",
+      "name": "Microsoft Research",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.microsoft.com/en-us/research/feed/",
+        "_designSpace": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "owner_entity_id": "microsoft",
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
       "tags": [
         "官方",
         "研究"
@@ -68,14 +202,14 @@
       "kind": "rss",
       "config": {
         "feedUrl": "https://huggingface.co/blog/feed.xml",
-        "_aihot": {
+        "_designSpace": {
           "initialBackfillLimit": 8
         }
       },
-      "tier": "T1",
+      "tier": "T1_5",
       "owner_entity_id": "hugging-face",
       "participation_mode": "editorial",
-      "interval_minutes": 120,
+      "interval_minutes": 180,
       "tags": [
         "官方",
         "开源"
@@ -84,103 +218,114 @@
       "syndicate_fulltext": false
     },
     {
-      "id": "rss-microsoft-research",
-      "name": "Microsoft Research",
+      "id": "rss-arxiv-cs-hc",
+      "name": "arXiv · cs.HC（人机交互）",
       "kind": "rss",
       "config": {
-        "feedUrl": "https://www.microsoft.com/en-us/research/feed/",
-        "_aihot": {
-          "initialBackfillLimit": 8
-        }
-      },
-      "tier": "T1",
-      "owner_entity_id": "microsoft",
-      "participation_mode": "editorial",
-      "interval_minutes": 120,
-      "tags": [
-        "官方",
-        "研究"
-      ],
-      "site_fulltext": false,
-      "syndicate_fulltext": false
-    },
-    {
-      "id": "rss-nvidia-blog",
-      "name": "NVIDIA Blog",
-      "kind": "rss",
-      "config": {
-        "feedUrl": "https://blogs.nvidia.com/feed/",
-        "_aihot": {
-          "initialBackfillLimit": 8
-        }
-      },
-      "tier": "T1",
-      "owner_entity_id": "nvidia",
-      "participation_mode": "editorial",
-      "interval_minutes": 120,
-      "tags": [
-        "官方"
-      ],
-      "site_fulltext": false,
-      "syndicate_fulltext": false
-    },
-    {
-      "id": "rss-aws-ml",
-      "name": "AWS Machine Learning Blog",
-      "kind": "rss",
-      "config": {
-        "feedUrl": "https://aws.amazon.com/blogs/machine-learning/feed/",
-        "_aihot": {
-          "initialBackfillLimit": 8
+        "feedUrl": "https://rss.arxiv.org/rss/cs.HC",
+        "_designSpace": {
+          "initialBackfillLimit": 5
         }
       },
       "tier": "T1",
       "owner_entity_id": null,
       "participation_mode": "editorial",
-      "interval_minutes": 120,
+      "interval_minutes": 360,
       "tags": [
-        "官方",
-        "教程"
+        "研究",
+        "预印本"
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
     },
     {
-      "id": "rss-github-ai",
-      "name": "GitHub Blog · AI & ML",
+      "id": "rss-arxiv-cs-gr",
+      "name": "arXiv · cs.GR（图形与生成视觉）",
       "kind": "rss",
       "config": {
-        "feedUrl": "https://github.blog/ai-and-ml/feed/",
-        "_aihot": {
-          "initialBackfillLimit": 8
+        "feedUrl": "https://rss.arxiv.org/rss/cs.GR",
+        "_designSpace": {
+          "initialBackfillLimit": 5
         }
       },
-      "tier": "T1",
+      "tier": "T1_5",
       "owner_entity_id": null,
       "participation_mode": "editorial",
-      "interval_minutes": 120,
+      "interval_minutes": 360,
       "tags": [
-        "官方"
+        "研究",
+        "预印本"
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
     },
     {
-      "id": "rss-mistral",
-      "name": "Mistral AI",
+      "id": "rss-arxiv-cs-cy",
+      "name": "arXiv · cs.CY（技术与社会）",
       "kind": "rss",
       "config": {
-        "feedUrl": "https://mistral.ai/news/rss",
-        "_aihot": {
-          "initialBackfillLimit": 8
+        "feedUrl": "https://rss.arxiv.org/rss/cs.CY",
+        "_designSpace": {
+          "initialBackfillLimit": 5
         }
       },
-      "tier": "T1",
+      "tier": "T2",
       "owner_entity_id": null,
       "participation_mode": "editorial",
-      "interval_minutes": 120,
+      "interval_minutes": 360,
       "tags": [
-        "官方"
+        "研究",
+        "预印本"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-arxiv-q-bio-nc",
+      "name": "arXiv · q-bio.NC（计算神经科学）",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://rss.arxiv.org/rss/q-bio.NC",
+        "_designSpace": {
+          "initialBackfillLimit": 5
+        }
+      },
+      "tier": "T2",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "tags": [
+        "研究",
+        "预印本",
+        "跨学科"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "web-mit-media-lab",
+      "name": "MIT Media Lab",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.media.mit.edu/",
+        "allowUrlPrefixes": [
+          "https://www.media.mit.edu/articles/",
+          "https://www.media.mit.edu/posts/"
+        ],
+        "_designSpace": {
+          "initialBackfillLimit": 8
+        },
+        "detail": {
+          "maxFetches": 8
+        }
+      },
+      "tier": "T1_5",
+      "owner_entity_id": "mit-media-lab",
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "tags": [
+        "研究",
+        "机构"
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
@@ -191,7 +336,178 @@
       "kind": "rss",
       "config": {
         "feedUrl": "https://bair.berkeley.edu/blog/feed.xml",
-        "_aihot": {
+        "_designSpace": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1_5",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "tags": [
+        "研究"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-nature-ml",
+      "name": "Nature · Machine Learning（主题订阅）",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.nature.com/subjects/machine-learning.rss",
+        "_designSpace": {
+          "initialBackfillLimit": 4
+        }
+      },
+      "tier": "T1_5",
+      "owner_entity_id": "nature",
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "研究",
+        "期刊"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-science-news",
+      "name": "Science · 新闻",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.science.org/rss/news_current.xml",
+        "_designSpace": {
+          "initialBackfillLimit": 6
+        }
+      },
+      "tier": "T1_5",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "tags": [
+        "研究",
+        "科学新闻",
+        "跨学科"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-nngroup",
+      "name": "Nielsen Norman Group",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.nngroup.com/feed/rss/",
+        "_designSpace": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1_5",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "研究",
+        "用户体验"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-dezeen",
+      "name": "Dezeen",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.dezeen.com/feed/",
+        "_designSpace": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "tags": [
+        "媒体",
+        "工业设计"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-design-milk",
+      "name": "Design Milk",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.design-milk.com/feed/",
+        "_designSpace": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "媒体"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-designboom",
+      "name": "designboom",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.designboom.com/feed/",
+        "_designSpace": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "媒体"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-core77",
+      "name": "Core77",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://core77.com/feed",
+        "_designSpace": {
+          "initialBackfillLimit": 8
+        },
+        "detail": {
+          "maxFetches": 8,
+          "publishedAtRegex": "published_into_channel_on\":\"(20\\d\\d-\\d\\d-\\d\\dT[\\d:.]+)",
+          "publishedAtUtcOffset": "-05:00"
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "媒体",
+        "工业设计"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-yanko-design",
+      "name": "Yanko Design",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.yankodesign.com/feed/",
+        "_designSpace": {
           "initialBackfillLimit": 8
         }
       },
@@ -200,7 +516,50 @@
       "participation_mode": "editorial",
       "interval_minutes": 180,
       "tags": [
-        "研究"
+        "媒体",
+        "工业设计"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-ux-collective",
+      "name": "UX Collective（uxdesign.cc）",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://uxdesign.cc/feed",
+        "_designSpace": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "媒体",
+        "实践"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-smashing-magazine",
+      "name": "Smashing Magazine",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.smashingmagazine.com/feed/",
+        "_designSpace": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "媒体",
+        "实践"
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
@@ -211,11 +570,11 @@
       "kind": "rss",
       "config": {
         "feedUrl": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",
-        "_aihot": {
+        "_designSpace": {
           "initialBackfillLimit": 8
         }
       },
-      "tier": "T2",
+      "tier": "T1",
       "owner_entity_id": null,
       "participation_mode": "editorial",
       "interval_minutes": 60,
@@ -231,31 +590,11 @@
       "kind": "rss",
       "config": {
         "feedUrl": "https://techcrunch.com/category/artificial-intelligence/feed/",
-        "_aihot": {
+        "_designSpace": {
           "initialBackfillLimit": 8
         }
       },
-      "tier": "T2",
-      "owner_entity_id": null,
-      "participation_mode": "editorial",
-      "interval_minutes": 60,
-      "tags": [
-        "媒体"
-      ],
-      "site_fulltext": false,
-      "syndicate_fulltext": false
-    },
-    {
-      "id": "rss-ars-technica-ai",
-      "name": "Ars Technica · AI",
-      "kind": "rss",
-      "config": {
-        "feedUrl": "https://arstechnica.com/ai/feed/",
-        "_aihot": {
-          "initialBackfillLimit": 8
-        }
-      },
-      "tier": "T2",
+      "tier": "T1",
       "owner_entity_id": null,
       "participation_mode": "editorial",
       "interval_minutes": 60,
@@ -271,97 +610,423 @@
       "kind": "rss",
       "config": {
         "feedUrl": "https://www.technologyreview.com/topic/artificial-intelligence/feed",
-        "_aihot": {
+        "_designSpace": {
           "initialBackfillLimit": 8
         }
       },
-      "tier": "T2",
+      "tier": "T1",
       "owner_entity_id": null,
       "participation_mode": "editorial",
       "interval_minutes": 120,
       "tags": [
-        "媒体"
+        "媒体",
+        "研究"
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
     },
     {
-      "id": "rss-the-decoder",
-      "name": "The Decoder",
+      "id": "rss-wired-ai",
+      "name": "WIRED · AI",
       "kind": "rss",
       "config": {
-        "feedUrl": "https://the-decoder.com/feed/",
-        "_aihot": {
+        "feedUrl": "https://www.wired.com/feed/tag/ai/latest/rss",
+        "_designSpace": {
           "initialBackfillLimit": 8
         }
       },
-      "tier": "T2",
-      "owner_entity_id": null,
-      "participation_mode": "editorial",
-      "interval_minutes": 60,
-      "tags": [
-        "媒体"
-      ],
-      "site_fulltext": false,
-      "syndicate_fulltext": false
-    },
-    {
-      "id": "rss-simon-willison",
-      "name": "Simon Willison",
-      "kind": "rss",
-      "config": {
-        "feedUrl": "https://simonwillison.net/atom/everything/",
-        "_aihot": {
-          "initialBackfillLimit": 8
-        }
-      },
-      "tier": "T2",
+      "tier": "T1",
       "owner_entity_id": null,
       "participation_mode": "editorial",
       "interval_minutes": 120,
       "tags": [
-        "个人"
+        "媒体",
+        "AI"
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
     },
     {
-      "id": "rss-import-ai",
-      "name": "Import AI",
+      "id": "rss-producthunt",
+      "name": "Product Hunt（产品发布流水）",
       "kind": "rss",
       "config": {
-        "feedUrl": "https://importai.substack.com/feed",
-        "_aihot": {
-          "initialBackfillLimit": 8
+        "feedUrl": "https://www.producthunt.com/feed",
+        "_designSpace": {
+          "initialBackfillLimit": 10
         }
       },
       "tier": "T2",
       "owner_entity_id": null,
-      "participation_mode": "editorial",
+      "participation_mode": "hot_signal",
       "interval_minutes": 180,
       "tags": [
-        "个人",
-        "周刊"
+        "产品",
+        "热度"
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
     },
     {
-      "id": "rss-latent-space",
-      "name": "Latent Space",
+      "id": "web-uisdc",
+      "name": "优设网",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.uisdc.com/",
+        "itemSelector": ".item-title",
+        "allowUrlPrefixes": [
+          "https://www.uisdc.com/group/",
+          "https://www.uisdc.com/hunter/"
+        ],
+        "_designSpace": {
+          "initialBackfillLimit": 8
+        },
+        "detail": {
+          "maxFetches": 8
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "媒体",
+        "中文"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-ifanr",
+      "name": "爱范儿",
       "kind": "rss",
       "config": {
-        "feedUrl": "https://www.latent.space/feed",
-        "_aihot": {
+        "feedUrl": "https://www.ifanr.com/feed",
+        "_designSpace": {
           "initialBackfillLimit": 8
         }
       },
-      "tier": "T2",
+      "tier": "T1",
       "owner_entity_id": null,
       "participation_mode": "editorial",
-      "interval_minutes": 180,
+      "interval_minutes": 120,
       "tags": [
-        "个人"
+        "媒体",
+        "中文",
+        "硬件"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-qbitai",
+      "name": "量子位",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.qbitai.com/feed",
+        "_designSpace": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "媒体",
+        "中文"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-geekpark",
+      "name": "极客公园",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.geekpark.net/rss",
+        "_designSpace": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "媒体",
+        "中文"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-sspai",
+      "name": "少数派",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://sspai.com/feed",
+        "_designSpace": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "媒体",
+        "中文",
+        "实践"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-toodaylab",
+      "name": "理想生活实验室",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.toodaylab.com/feed",
+        "_designSpace": {
+          "initialBackfillLimit": 6
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "媒体",
+        "中文",
+        "设计"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-acm-tochi",
+      "name": "ACM TOCHI（人机交互汇刊）",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://dl.acm.org/action/showFeed?type=etoc&feed=rss&jc=tochi",
+        "_designSpace": {
+          "initialBackfillLimit": 5
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "研究",
+        "期刊",
+        "用户体验"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-acm-interactions",
+      "name": "ACM Interactions（交互设计）",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://dl.acm.org/action/showFeed?type=etoc&feed=rss&jc=interactions",
+        "_designSpace": {
+          "initialBackfillLimit": 5
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "研究",
+        "期刊",
+        "设计"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-acm-pacmhci",
+      "name": "ACM PACMHCI（CHI／CSCW 论文）",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://dl.acm.org/action/showFeed?type=etoc&feed=rss&jc=pacmhci",
+        "_designSpace": {
+          "initialBackfillLimit": 5
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "研究",
+        "期刊",
+        "用户体验"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-sheji",
+      "name": "She Ji（设计学报 · 开放获取）",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://rss.sciencedirect.com/publication/science/24058726",
+        "_designSpace": {
+          "initialBackfillLimit": 5
+        }
+      },
+      "tier": "T1_5",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "研究",
+        "期刊",
+        "开源",
+        "设计"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-design-studies",
+      "name": "Design Studies（设计研究）",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://rss.sciencedirect.com/publication/science/0142694X",
+        "_designSpace": {
+          "initialBackfillLimit": 5
+        }
+      },
+      "tier": "T1_5",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "研究",
+        "期刊",
+        "设计"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "web-ijdesign",
+      "name": "International Journal of Design（开放获取）",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.ijdesign.org/index.php/IJDesign/issue/current",
+        "itemSelector": "#TOC_Menu_EachArticle",
+        "linkSelector": "#Galley_Text a.file",
+        "titleSelector": "#Title",
+        "allowUrlPrefixes": [
+          "https://www.ijdesign.org/index.php/IJDesign/article/view/"
+        ],
+        "_designSpace": {
+          "initialBackfillLimit": 6
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 1440,
+      "tags": [
+        "研究",
+        "期刊",
+        "开源",
+        "设计"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "web-shejijingsai",
+      "name": "设计竞赛网（赛事征集）",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.shejijingsai.com/",
+        "itemSelector": ".post-item",
+        "linkSelector": "a",
+        "titleSelector": "h2",
+        "allowUrlPrefixes": [
+          "https://www.shejijingsai.com/20"
+        ],
+        "_designSpace": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1_5",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "tags": [
+        "中文",
+        "设计"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "web-reddot-magazine",
+      "name": "红点奖 · Magazine（获奖与动态）",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.red-dot.org/zh/magazine",
+        "itemSelector": ".media-teaser",
+        "linkSelector": "a[href]",
+        "titleSelector": "h3.media-teaser__title",
+        "allowUrlPrefixes": [
+          "https://www.red-dot.org/zh/magazine/",
+          "https://www.red-dot.org/magazine/",
+          "https://www.red-dot.org/project/"
+        ],
+        "_designSpace": {
+          "initialBackfillLimit": 6
+        }
+      },
+      "tier": "T1_5",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "媒体",
+        "设计",
+        "工业设计"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "web-digitaling-projects",
+      "name": "数英 · 项目（设计作品）",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.digitaling.com/projects",
+        "itemSelector": ".work_item",
+        "linkSelector": ".works_title h3 a",
+        "titleSelector": ".works_title h3 a",
+        "allowUrlPrefixes": [
+          "https://www.digitaling.com/projects/"
+        ],
+        "publishedAtSelector": "label",
+        "publishedAtUtcOffset": "+08:00",
+        "_designSpace": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "tags": [
+        "媒体",
+        "中文",
+        "设计"
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false

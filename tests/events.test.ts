@@ -6,16 +6,16 @@ import { embeddingsStub, gate, stub, tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { after, before, test } from "node:test";
-import { closeDb, sql } from "@aihot/backend/db";
-import { detachFromFact, requestRegroup } from "@aihot/backend/events/corrections";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { consolidate, linkRelatedStories, liveStory } from "@aihot/backend/events/consolidate";
-import { groupArticle } from "@aihot/backend/events/group";
-import { mergeFactInto, mergeStoryInto } from "@aihot/backend/events/merge";
-import { candidateViews } from "@aihot/backend/events/recall";
-import { stopBoss } from "@aihot/backend/jobs/queue";
-import { publishArticle } from "@aihot/backend/publication/publish";
-import { resolveStory } from "@aihot/backend/publication/stories";
+import { closeDb, sql } from "@design-space/backend/db";
+import { detachFromFact, requestRegroup } from "@design-space/backend/events/corrections";
+import { upsertMaterial } from "@design-space/backend/content/materials";
+import { consolidate, linkRelatedStories, liveStory } from "@design-space/backend/events/consolidate";
+import { groupArticle } from "@design-space/backend/events/group";
+import { mergeFactInto, mergeStoryInto } from "@design-space/backend/events/merge";
+import { candidateViews } from "@design-space/backend/events/recall";
+import { stopBoss } from "@design-space/backend/jobs/queue";
+import { publishArticle } from "@design-space/backend/publication/publish";
+import { resolveStory } from "@design-space/backend/publication/stories";
 
 const T = tag();
 const SOURCE = `test-events-${T}`;
@@ -74,7 +74,7 @@ async function report(suffix: string, title = FACT_TITLE, summary = "摘要", pu
     sourceId: SOURCE, url: `https://example.com/events-${T}-${suffix}`, title: `Model launch ${T} ${suffix}`, bodyText: "A new model.", bodyStatus: "ok", via: "fetch", publishedAt,
   });
   await sql`INSERT INTO analyses (article_id, input_revision, origin, relevance, category, title_zh, summary_zh, score, selected, output)
-            VALUES (${articleId}, 1, 'rule', 'pass', 'ai-models', ${title}, ${summary}, 80, false, ${sql.json({ fact: { title, subject: "测试", action: "发布", object: "模型" } })})`;
+            VALUES (${articleId}, 1, 'rule', 'pass', 'design-tools', ${title}, ${summary}, 80, false, ${sql.json({ fact: { title, subject: "测试", action: "发布", object: "模型" } })})`;
   await publishArticle(articleId);
   return articleId;
 }

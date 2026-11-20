@@ -3,14 +3,14 @@
 import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { after, before, test } from "node:test";
-import { config } from "@aihot/backend/config";
-import { closeDb, sql } from "@aihot/backend/db";
-import { ADMIN } from "@aihot/site";
+import { config } from "@design-space/backend/config";
+import { closeDb, sql } from "@design-space/backend/db";
+import { ADMIN } from "@design-space/site";
 import { buildApp } from "../apps/api/src/app.ts";
 import { registerAdmin } from "../apps/api/src/routes/admin.ts";
-import { resolveDelivery, resendDelivery } from "@aihot/backend/notify/deliver";
-import { runsOverview } from "@aihot/backend/admin/runs";
-import { getBoss, stopBoss } from "@aihot/backend/jobs/queue";
+import { resolveDelivery, resendDelivery } from "@design-space/backend/notify/deliver";
+import { runsOverview } from "@design-space/backend/admin/runs";
+import { getBoss, stopBoss } from "@design-space/backend/jobs/queue";
 
 const T = tag();
 const TARGET = `test-delivery-${T}`;

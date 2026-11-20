@@ -3,9 +3,9 @@ import { stub } from './setup.ts';
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { after, test } from 'node:test';
-import { sql, closeDb } from '@aihot/backend/db';
-import { candidateViews, recallFacts, relatedPosts } from '@aihot/backend/events/recall';
-import { consolidate, linkRelatedStories } from '@aihot/backend/events/consolidate';
+import { sql, closeDb } from '@design-space/backend/db';
+import { candidateViews, recallFacts, relatedPosts } from '@design-space/backend/events/recall';
+import { consolidate, linkRelatedStories } from '@design-space/backend/events/consolidate';
 const prompts: string[] = [];
 const provider = await stub((_hit,request) => {
   prompts.push(JSON.parse(request.body).messages[1].content);
@@ -62,7 +62,7 @@ test('a withdrawn-only earlier fact does not claim the root of an active candida
 });
 test('withdrawn similarity hits do not consume a valid top candidate slot',async()=>{
   const old=await fixture(),active=await fixture(); const a=await report(old,'expired','withdrawn'),b=await report(active,'active','public');
-  const query=randomUUID()+' 模型发布架构参数推理上下文完整技术说明';
+  const query=randomUUID()+' 工具发布界面参数交互流程完整使用说明';
   for(const [row,title] of [[a,query],[b,query+' 新补充']] as const) {
     await sql`UPDATE publications SET title=${title} WHERE article_id=${row.id}`;
   }

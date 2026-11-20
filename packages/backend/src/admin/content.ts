@@ -4,8 +4,8 @@
 // overrides with a version check, are re-projected to every public exit, and are audited.
 import { z } from "zod";
 import { correctReportClassification } from "../reports/correct.ts";
-import type { AdminContentChain, AdminContentRow, AdminPublication, AdminPresentationRefresh, AdminRerun, BeforeJson } from "@aihot/contracts/admin";
-import { ARTICLE_ID_PATTERN, CATEGORY_KEYS } from "@aihot/contracts/taxonomy";
+import type { AdminContentChain, AdminContentRow, AdminPublication, AdminPresentationRefresh, AdminRerun, BeforeJson } from "@design-space/contracts/admin";
+import { ARTICLE_ID_PATTERN, CATEGORY_KEYS } from "@design-space/contracts/taxonomy";
 import { sql, type Db, type Tx } from "../db.ts";
 import { enqueue, QUEUES } from "../jobs/queue.ts";
 import { needsGrouping, queueProcessing } from "../jobs/content.ts";

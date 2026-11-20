@@ -1,7 +1,7 @@
 // Site navigation in one place: the desktop sidebar's sections and the phone tab bar's tabs, the engine's
 // and the site's modules'.
 import type { ReactNode } from "react";
-import { NAV, subjectAfter, withSubject } from "@aihot/site";
+import { NAV, subjectAfter, withSubject } from "@design-space/site";
 import { webModules } from "../../site-modules";
 import {
   IconBolt, IconBookmark, IconDoc, IconFlame, IconGrid, IconHeart, IconHistory, IconList, IconMessage, IconPlug, IconUser,

@@ -1,8 +1,8 @@
-import { SITE, SOURCE_DEFAULTS } from "@aihot/site";
+import { SITE, SOURCE_DEFAULTS } from "@design-space/site";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import type { Route } from "./+types/source-new";
-import type { AdminSourceCreated, AdminSourcePreview } from "@aihot/contracts/admin";
+import type { AdminSourceCreated, AdminSourcePreview } from "@design-space/contracts/admin";
 import { useAdminAction } from "../../features/admin/action";
 import { bj } from "../../features/admin/format";
 import { KIND_LABEL, MODE_LABEL, SELECTION_CLASS_LABEL, TIER_LABEL } from "../../features/admin/labels";

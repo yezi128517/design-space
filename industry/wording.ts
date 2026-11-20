@@ -2,4 +2,8 @@
 // 写作那一步写完中文标题、摘要和推荐理由后逐个查，用了就让模型只改这些地方一次（packages/backend/src/editorial/
 // analyze.ts 的 mendWording）。只列一眼就能判断的写法：拿不准的不列，否则会误改正常的词。空着就不查。
 
-export const READER_WORDING: ReadonlyArray<readonly [RegExp, string]> = [];
+export const READER_WORDING: ReadonlyArray<readonly [RegExp, string]> = [
+  [/颠覆式|颠覆行业|革命性|划时代|里程碑式/u, "不用这类定性，直接说变化和它影响谁"],
+  [/重新定义|重塑/u, "不写“重新定义”“重塑”，说清楚具体改了什么"],
+  [/赋能/u, "不用“赋能”，写清楚谁用它能把哪一步做掉"],
+];

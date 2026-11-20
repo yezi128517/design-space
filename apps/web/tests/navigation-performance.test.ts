@@ -13,7 +13,7 @@
 import assert from "node:assert/strict";
 import { before, after, test } from "node:test";
 import { chromium, webkit, expect, type Browser } from "@playwright/test";
-import type { ReportDetail } from "@aihot/contracts/site";
+import type { ReportDetail } from "@design-space/contracts/site";
 import { FIXTURE_AT as at, fakeApi, feedItem, itemDetail, startWebServer, visit, type WebServer } from "./web-server.ts";
 
 const item = feedItem({id:'navigation-fixture',title:'性能检查文章'});
@@ -92,15 +92,15 @@ test('SSR list and visited query variants return offline without another read',a
     await expect(page.getByRole('link',{name:'性能检查文章',exact:true})).toBeVisible({timeout:1500});
     await context.setOffline(false);
     await page.getByRole('button',{name:/^筛选/}).click();
-    await page.getByRole('link',{name:'模型',exact:true}).click();
-    await expect(page.getByRole('link',{name:'分类 ai-models',exact:true})).toBeVisible();
+    await page.getByRole('link',{name:'工具',exact:true}).click();
+    await expect(page.getByRole('link',{name:'分类 design-tools',exact:true})).toBeVisible();
     await page.getByRole('button',{name:/^筛选/}).click();
     await page.getByRole('link',{name:'产品',exact:true}).click();
-    await expect(page.getByRole('link',{name:'分类 ai-products',exact:true})).toBeVisible();
+    await expect(page.getByRole('link',{name:'分类 design-products',exact:true})).toBeVisible();
     await context.setOffline(true);
     await page.goBack();
-    await expect(page.getByRole('link',{name:'分类 ai-models',exact:true})).toBeVisible({timeout:1500});
-    await expect(page.locator('link[rel=canonical]')).toHaveAttribute('href',origin+'/?category=ai-models');
+    await expect(page.getByRole('link',{name:'分类 design-tools',exact:true})).toBeVisible({timeout:1500});
+    await expect(page.locator('link[rel=canonical]')).toHaveAttribute('href',origin+'/?category=design-tools');
   }finally{await context.close();}
 });
 
@@ -153,17 +153,17 @@ test('a press on a selected link preserves visited data and the next revisit sta
   page.on('request',request=>{if(request.url().includes('.data'))requests.push(request.url());});
   try{
     await visit(page,origin+'/');
-    await page.getByRole('link',{name:'模型',exact:true}).click();
-    await expect(page.getByRole('link',{name:'分类 ai-models',exact:true})).toBeVisible();
-    await page.getByRole('link',{name:'模型',exact:true}).dispatchEvent('pointerdown',{button:0,pointerType:'mouse',isPrimary:true});
+    await page.getByRole('link',{name:'工具',exact:true}).click();
+    await expect(page.getByRole('link',{name:'分类 design-tools',exact:true})).toBeVisible();
+    await page.getByRole('link',{name:'工具',exact:true}).dispatchEvent('pointerdown',{button:0,pointerType:'mouse',isPrimary:true});
     await page.waitForTimeout(150);
     await page.getByRole('link',{name:'产品',exact:true}).click();
-    await expect(page.getByRole('link',{name:'分类 ai-products',exact:true})).toBeVisible();
+    await expect(page.getByRole('link',{name:'分类 design-products',exact:true})).toBeVisible();
     await page.getByRole('link',{name:'产品',exact:true}).dispatchEvent('pointerdown',{button:0,pointerType:'mouse',isPrimary:true});
     await page.waitForTimeout(150);
     const before=requests.length;
-    await page.getByRole('link',{name:'模型',exact:true}).click();
-    await expect(page.getByRole('link',{name:'分类 ai-models',exact:true})).toBeVisible();
+    await page.getByRole('link',{name:'工具',exact:true}).click();
+    await expect(page.getByRole('link',{name:'分类 design-tools',exact:true})).toBeVisible();
     assert.deepEqual(requests.slice(before),[],'neither prefetch nor navigation may evict and reload a still-valid visited page');
   }finally{await context.close();}
 });

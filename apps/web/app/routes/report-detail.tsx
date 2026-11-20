@@ -1,11 +1,11 @@
 import { data, useLoaderData } from "react-router";
 import type { Route } from "./+types/report-detail";
-import { REPORT_NAMES, reportDateLabel, type ReportDetail, type ReportNavigationResponse, type ReportKind } from "@aihot/contracts/site";
-import { SITE, subjectAfter, withSubject } from "@aihot/site";
+import { REPORT_NAMES, reportDateLabel, type ReportDetail, type ReportNavigationResponse, type ReportKind } from "@design-space/contracts/site";
+import { SITE, subjectAfter, withSubject } from "@design-space/site";
 import { apiGet, cachedPage, loadOr404 } from "../lib/api.server";
 import { pageReuse } from "../lib/page-reuse";
 import { breadcrumbLd, pageMeta, reportDescription, reportLd, reportTitle, titled } from "../lib/seo";
-import { beijingDate } from "@aihot/contracts/time";
+import { beijingDate } from "@design-space/contracts/time";
 import { ReportLayout } from "../features/report/ReportLayout";
 import { ReportPaper, reportOutline } from "../features/report/ReportPaper";
 import { KIND_PATH, feedLink, kindFromPath } from "../features/report/format";

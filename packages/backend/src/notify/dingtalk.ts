@@ -5,7 +5,7 @@ import { createHmac } from "node:crypto";
 import { credential } from "../config.ts";
 import { sendWebhook } from "./feishu.ts";
 import { itemUrl } from "../publication/links.ts";
-import { SITE } from "@aihot/site";
+import { SITE } from "@design-space/site";
 
 export interface DingtalkContent {
   title: string;

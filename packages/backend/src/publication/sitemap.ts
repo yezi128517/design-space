@@ -4,8 +4,8 @@
 // of that original lifetime.
 import { mkdir, readFile, stat, utimes, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { REPORT_NAMES, reportDateLabel, STORY_INDEX_MIN_SOURCES, type ReportKind } from "@aihot/contracts/site";
-import { ABOUT, ACCESS, AGENT, POLICY, SITE, withSubject } from "@aihot/site";
+import { REPORT_NAMES, reportDateLabel, STORY_INDEX_MIN_SOURCES, type ReportKind } from "@design-space/contracts/site";
+import { ABOUT, ACCESS, AGENT, POLICY, SITE, withSubject } from "@design-space/site";
 import { config, REPO_ROOT } from "../config.ts";
 import { sha256, stableJson } from "../lib/ids.ts";
 import { loadChangelog } from "../site/meta.ts";

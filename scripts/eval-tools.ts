@@ -2,9 +2,9 @@
 // metrics, argument checks, the models to compare, bounded concurrency, what their paid attempts used,
 // and safe report names.
 import { z } from "zod";
-import { sql } from "@aihot/backend/db";
-import { modelFor } from "@aihot/backend/editorial/models";
-import { MODELS } from "@aihot/backend/providers/llm";
+import { sql } from "@design-space/backend/db";
+import { modelFor } from "@design-space/backend/editorial/models";
+import { MODELS } from "@design-space/backend/providers/llm";
 
 /**
  * The cases of a JSONL file, one per line (blank lines and lines starting with // are skipped), each

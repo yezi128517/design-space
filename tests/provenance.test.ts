@@ -3,17 +3,17 @@
 import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { after, test } from "node:test";
-import { closeDb, sql } from "@aihot/backend/db";
-import { QUEUES, stopBoss } from "@aihot/backend/jobs/queue";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { publisherOwnsUrl } from "@aihot/backend/content/provenance";
-import { publishArticle } from "@aihot/backend/publication/publish";
-import { loadPool } from "@aihot/backend/publication/pool";
-import { ingestItems } from "@aihot/backend/ingest/items";
-import { queueProcessing, settleNonEditorial } from "@aihot/backend/jobs/content";
-import { collectSource } from "@aihot/backend/sources/collect";
-import { updateSource } from "@aihot/backend/admin/sources";
-import { groupArticle } from "@aihot/backend/events/group";
+import { closeDb, sql } from "@design-space/backend/db";
+import { QUEUES, stopBoss } from "@design-space/backend/jobs/queue";
+import { upsertMaterial } from "@design-space/backend/content/materials";
+import { publisherOwnsUrl } from "@design-space/backend/content/provenance";
+import { publishArticle } from "@design-space/backend/publication/publish";
+import { loadPool } from "@design-space/backend/publication/pool";
+import { ingestItems } from "@design-space/backend/ingest/items";
+import { queueProcessing, settleNonEditorial } from "@design-space/backend/jobs/content";
+import { collectSource } from "@design-space/backend/sources/collect";
+import { updateSource } from "@design-space/backend/admin/sources";
+import { groupArticle } from "@design-space/backend/events/group";
 
 after(async () => { await stopBoss(); await closeDb(); });
 

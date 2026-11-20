@@ -2,9 +2,9 @@
 // with the feed filters they carry. The site's name and wording come from site/site.ts;
 //; its address from SITE_URL.
 import type { MetaDescriptor } from "react-router";
-import { REPORT_NAMES, reportDateLabel, STORY_INDEX_MIN_SOURCES, type ReportDetail, type StoryDetail, type TimelineFilters } from "@aihot/contracts/site";
-import { isCategoryKey, isChannelKey } from "@aihot/contracts/taxonomy";
-import { SITE, subjectAfter, withSubject } from "@aihot/site";
+import { REPORT_NAMES, reportDateLabel, STORY_INDEX_MIN_SOURCES, type ReportDetail, type StoryDetail, type TimelineFilters } from "@design-space/contracts/site";
+import { isCategoryKey, isChannelKey } from "@design-space/contracts/taxonomy";
+import { SITE, subjectAfter, withSubject } from "@design-space/site";
 
 /**
  * The site's address: SITE_URL while rendering on the server (what crawlers and share previews read),

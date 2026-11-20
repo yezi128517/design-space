@@ -3,9 +3,9 @@
 import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { after, test } from "node:test";
-import { sql, closeDb } from "@aihot/backend/db";
-import { topicPageCounts } from "@aihot/backend/publication/topics";
-import { loadLlmsAvailability } from "@aihot/backend/publication/llms";
+import { sql, closeDb } from "@design-space/backend/db";
+import { topicPageCounts } from "@design-space/backend/publication/topics";
+import { loadLlmsAvailability } from "@design-space/backend/publication/llms";
 import { buildApp } from "../apps/api/src/app.ts";
 
 const app = await buildApp();
@@ -17,14 +17,14 @@ test("llms and sitemap build from current topic scope rather than a cached direc
   for (let i = 0; i < 20; i++) {
     const id = `${source}-${i}`;
     await sql`INSERT INTO articles (id,source_id,identity_key,url,title,timeline_at,discovered_at)
-      VALUES (${id},${source},${id},${`https://example.org/${id}`},'MiniMax',now(),now())`;
+      VALUES (${id},${source},${id},${`https://example.org/${id}`},'Figma',now(),now())`;
     await sql`INSERT INTO publications (article_id,source_id,title,summary,url,timeline_at,discovered_at,sort_at,selected,eligible,visible_after,tags,channel,category)
-      VALUES (${id},${source},'MiniMax 发布模型','Summary',${`https://example.org/${id}`},now(),now(),now(),true,true,now() - interval '1 minute',ARRAY['entity:minimax'],'news','ai-models')`;
+      VALUES (${id},${source},'Figma 发布新工具','Summary',${`https://example.org/${id}`},now(),now(),now(),true,true,now() - interval '1 minute',ARRAY['entity:figma'],'news','design-tools')`;
   }
-  assert.equal((await topicPageCounts()).find((topic) => topic.slug === "minimax")!.indexable, true);
+  assert.equal((await topicPageCounts()).find((topic) => topic.slug === "figma")!.indexable, true);
   await sql`UPDATE publications SET visibility = 'withdrawn' WHERE source_id = ${source}`;
-  assert.ok(!(await loadLlmsAvailability()).topics.some((topic) => topic.slug === "minimax"));
+  assert.ok(!(await loadLlmsAvailability()).topics.some((topic) => topic.slug === "figma"));
   const sitemap = await app.inject("/sitemaps/topics.xml");
   assert.equal(sitemap.statusCode, 200);
-  assert.ok(!sitemap.body.includes("/topics/minimax</loc>"));
+  assert.ok(!sitemap.body.includes("/topics/figma</loc>"));
 });

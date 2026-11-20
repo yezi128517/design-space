@@ -2,8 +2,8 @@
 // stop accepting queued work, and distinguish queue drain completion from database shutdown.
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { closeDb } from "@aihot/backend/db";
-import { getBoss, stopBoss } from "@aihot/backend/jobs/queue";
+import { closeDb } from "@design-space/backend/db";
+import { getBoss, stopBoss } from "@design-space/backend/jobs/queue";
 
 test("queue drain reports concurrent work and waits without exposing payloads or taking another job", async (t) => {
   const boss = await getBoss();

@@ -7,15 +7,15 @@
 import { tag } from './setup.ts';
 import assert from 'node:assert/strict';
 import { after, before, test } from 'node:test';
-import { closeDb, sql } from '@aihot/backend/db';
-import { upsertMaterial } from '@aihot/backend/content/materials';
-import { publishArticle } from '@aihot/backend/publication/publish';
-import { feedIssues, loadReport, v1Dailies, v1Daily, v1Period, v1Periods } from '@aihot/backend/publication/reports';
-import { reportFeed } from '@aihot/backend/publication/feeds';
-import { llmsTxt } from '@aihot/backend/publication/llms';
-import { stopBoss } from '@aihot/backend/jobs/queue';
+import { closeDb, sql } from '@design-space/backend/db';
+import { upsertMaterial } from '@design-space/backend/content/materials';
+import { publishArticle } from '@design-space/backend/publication/publish';
+import { feedIssues, loadReport, v1Dailies, v1Daily, v1Period, v1Periods } from '@design-space/backend/publication/reports';
+import { reportFeed } from '@design-space/backend/publication/feeds';
+import { llmsTxt } from '@design-space/backend/publication/llms';
+import { stopBoss } from '@design-space/backend/jobs/queue';
 import { buildApp } from '../apps/api/src/app.ts';
-import type { ReportKind, SiteItemDetail } from '@aihot/contracts/site';
+import type { ReportKind, SiteItemDetail } from '@design-space/contracts/site';
 
 const T = tag();
 const source = `report-outlets-${T}`;
@@ -78,7 +78,7 @@ test('withdrawing a named lead preserves the replacement headline and its own fr
 
 test('a historical written daily lead follows withdrawal of the citation it describes', async (t) => {
   t.mock.timers.enable({ apis: ['Date'], now: Date.now() + 1_200_002 });
-  const removed = await citation('历史模型发布与能力升级');
+  const removed = await citation('历史工具发布与能力升级');
   const replacement = await citation('新的安全工具发布');
   const key = '2096-01-02';
   await issue('daily', key, { lead: { title: removed.title, leadParagraph: removed.summary }, highlights: [replacement.itemId], sections: [{ label: 'News', items: [removed, replacement] }] });
@@ -262,7 +262,7 @@ test('an article page leads an issue without a named lead item exactly when that
   // Issues composed before leads were named: a written lead matched to its citation by title, highlights
   // without a lead, or neither.
   for (const [key, shape] of [['2097-02-03', 'written'], ['2097-02-04', 'none'], ['2097-02-05', 'highlights']] as const) {
-    const opening = await citation(`${key} 开篇模型发布`);
+    const opening = await citation(`${key} 开篇工具发布`);
     const described = await citation(`${key} 安全工具正式上线`);
     await issue('daily', key, { lead: shape === 'written' ? { title: described.title, leadParagraph: '旧版导语' } : null,
       ...(shape === 'highlights' ? { highlights: [described.itemId] } : {}), sections: [{ label: 'News', items: [opening, described] }] });

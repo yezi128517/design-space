@@ -4,11 +4,11 @@
 import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { after, test } from "node:test";
-import { closeDb, sql } from "@aihot/backend/db";
-import { stopBoss } from "@aihot/backend/jobs/queue";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { publisherOwnsUrl } from "@aihot/backend/content/provenance";
-import { assertSupportedConfig } from "@aihot/backend/sources/config-keys";
+import { closeDb, sql } from "@design-space/backend/db";
+import { stopBoss } from "@design-space/backend/jobs/queue";
+import { upsertMaterial } from "@design-space/backend/content/materials";
+import { publisherOwnsUrl } from "@design-space/backend/content/provenance";
+import { assertSupportedConfig } from "@design-space/backend/sources/config-keys";
 
 after(async () => { await stopBoss(); await closeDb(); });
 async function source(tier: string, config: Record<string, unknown> = {}) {

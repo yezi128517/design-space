@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import type { MentionRun } from "@aihot/contracts/mentions";
+import type { MentionRun } from "@design-space/contracts/mentions";
 
 /**
  * A text of the page with its links drawn as links in a sentence: names to their pages (linkMentions), web

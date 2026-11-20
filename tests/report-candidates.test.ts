@@ -3,12 +3,12 @@ import { editionAt, gate, tag } from "./setup.ts";
 import { after, before, test } from "node:test";
 import assert from "node:assert/strict";
 import { setTimeout as delay } from "node:timers/promises";
-import { closeDb, sql } from "@aihot/backend/db";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { stopBoss } from "@aihot/backend/jobs/queue";
-import { publishArticle, publishArticleTx } from "@aihot/backend/publication/publish";
-import { composeDaily } from "@aihot/backend/reports/compose";
-import { candidates } from "@aihot/backend/reports/edition";
+import { closeDb, sql } from "@design-space/backend/db";
+import { upsertMaterial } from "@design-space/backend/content/materials";
+import { stopBoss } from "@design-space/backend/jobs/queue";
+import { publishArticle, publishArticleTx } from "@design-space/backend/publication/publish";
+import { composeDaily } from "@design-space/backend/reports/compose";
+import { candidates } from "@design-space/backend/reports/edition";
 
 const T = tag();
 const SOURCE = `test-report-boundary-${T}`;
@@ -35,7 +35,7 @@ async function analyzed(label: string, timelineAt: Date): Promise<string> {
   });
   assert.equal(backfill, false);
   await sql`INSERT INTO analyses (article_id, input_revision, origin, relevance, category, title_zh, summary_zh, score, selected)
-            VALUES (${articleId}, 1, 'rule', 'pass', 'ai-models', ${`标题 ${label}`}, ${`摘要 ${label}`}, 90, true)`;
+            VALUES (${articleId}, 1, 'rule', 'pass', 'design-tools', ${`标题 ${label}`}, ${`摘要 ${label}`}, 90, true)`;
   return articleId;
 }
 

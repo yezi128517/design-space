@@ -4,7 +4,7 @@
 // runs submit URLs that joined it since, each once. A request over the remaining quota is refused and voids
 // the rest of the day, so a request never asks for more than Baidu's previous reply said is left; the first
 // request of a Beijing day carries one URL to learn that number.
-import { beijingDate } from "@aihot/contracts/time";
+import { beijingDate } from "@design-space/contracts/time";
 import { config } from "../config.ts";
 import { sql } from "../db.ts";
 import { siteUrl } from "../publication/links.ts";

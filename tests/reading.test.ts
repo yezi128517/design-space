@@ -7,12 +7,12 @@ import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { after, before, test } from "node:test";
-import { closeDb, sql } from "@aihot/backend/db";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { stopBoss } from "@aihot/backend/jobs/queue";
-import { publishArticle } from "@aihot/backend/publication/publish";
-import { textToHtml } from "@aihot/backend/content/sanitize";
-import { addressRuns, shortAddresses } from "@aihot/contracts/addresses";
+import { closeDb, sql } from "@design-space/backend/db";
+import { upsertMaterial } from "@design-space/backend/content/materials";
+import { stopBoss } from "@design-space/backend/jobs/queue";
+import { publishArticle } from "@design-space/backend/publication/publish";
+import { textToHtml } from "@design-space/backend/content/sanitize";
+import { addressRuns, shortAddresses } from "@design-space/contracts/addresses";
 import { buildApp } from "../apps/api/src/app.ts";
 
 const T = tag();
@@ -42,7 +42,7 @@ async function report(source: string, opts: { selected: boolean; hoursAgo: numbe
   });
   await sql`UPDATE articles SET discovered_at = ${at}, timeline_at = ${at} WHERE id = ${articleId}`;
   await sql`INSERT INTO analyses (article_id, input_revision, origin, relevance, category, title_zh, summary_zh, score, selected, subjects, tags)
-            VALUES (${articleId}, 1, 'rule', 'pass', 'ai-models', ${opts.title ?? `标题${n}-${T}`}, ${`摘要${n}-${T}`}, 80, ${opts.selected}, ${opts.subjects ?? []}, ${[`t-${T}`]})`;
+            VALUES (${articleId}, 1, 'rule', 'pass', 'design-tools', ${opts.title ?? `标题${n}-${T}`}, ${`摘要${n}-${T}`}, 80, ${opts.selected}, ${opts.subjects ?? []}, ${[`t-${T}`]})`;
   return articleId;
 }
 

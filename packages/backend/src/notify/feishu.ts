@@ -7,7 +7,7 @@
 import { createHash } from "node:crypto";
 import { readFile, unlink } from "node:fs/promises";
 import path from "node:path";
-import { beijingStamp } from "@aihot/contracts/time";
+import { beijingStamp } from "@design-space/contracts/time";
 import { config, credential } from "../config.ts";
 import { sql } from "../db.ts";
 

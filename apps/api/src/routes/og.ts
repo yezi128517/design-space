@@ -1,17 +1,17 @@
 // Share images (1200×630 PNG) for pages, items, reports, topics and events. Only public content
 // gets a card; anything else is a real 404.
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { reportDateLabel } from "@aihot/contracts/site";
-import { CATEGORY_LABELS } from "@aihot/contracts/taxonomy";
-import { beijingDate } from "@aihot/contracts/time";
-import { loadItemOgCard, loadItemShare } from "@aihot/backend/publication/og";
-import { loadReport, type ReportKind } from "@aihot/backend/publication/reports";
-import { findTopic, TOPIC_GROUPS, TOPICS } from "@aihot/backend/publication/topics";
-import { loadStoryDetail, resolveStory } from "@aihot/backend/publication/stories";
-import { ogEtag, renderOg, type OgCard } from "@aihot/backend/media/og";
-import { posterEtag, renderPoster, type Poster } from "@aihot/backend/media/poster";
-import { CARDS, ITEM_COPY, REPORTS, subjectAfter, withSubject } from "@aihot/site";
-import { config } from "@aihot/backend/config";
+import { reportDateLabel } from "@design-space/contracts/site";
+import { CATEGORY_LABELS } from "@design-space/contracts/taxonomy";
+import { beijingDate } from "@design-space/contracts/time";
+import { loadItemOgCard, loadItemShare } from "@design-space/backend/publication/og";
+import { loadReport, type ReportKind } from "@design-space/backend/publication/reports";
+import { findTopic, TOPIC_GROUPS, TOPICS } from "@design-space/backend/publication/topics";
+import { loadStoryDetail, resolveStory } from "@design-space/backend/publication/stories";
+import { ogEtag, renderOg, type OgCard } from "@design-space/backend/media/og";
+import { posterEtag, renderPoster, type Poster } from "@design-space/backend/media/poster";
+import { CARDS, ITEM_COPY, REPORTS, subjectAfter, withSubject } from "@design-space/site";
+import { config } from "@design-space/backend/config";
 
 /** The pages' share cards: the site's texts, and the topic count of the topic list. */
 const PAGES: Record<string, OgCard> = {

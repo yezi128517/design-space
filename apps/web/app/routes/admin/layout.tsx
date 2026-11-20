@@ -1,10 +1,11 @@
 import { Suspense } from "react";
-import { ADMIN, SITE } from "@aihot/site";
+import { ADMIN, SITE } from "@design-space/site";
 import { Await, data, NavLink, Outlet, useLocation, useNavigation, type ShouldRevalidateFunction } from "react-router";
 import type { Route } from "./+types/layout";
-import { RingMark } from "@aihot/site/brand/Logo.tsx";
+import { RingMark } from "@design-space/site/brand/Logo.tsx";
+import { MODULES } from "@design-space/site/modules";
 import { NavigationProgress } from "../../components/shell/Chrome";
-import type { AdminMe, AdminNavCounts } from "@aihot/contracts/admin";
+import type { AdminMe, AdminNavCounts } from "@design-space/contracts/admin";
 import { Toaster } from "../../features/admin/toast";
 import { adminGet } from "../../lib/admin.server";
 
@@ -32,6 +33,9 @@ export const meta: Route.MetaFunction = () => [{ title: `${SITE.name} 后台` },
 
 export const headers: Route.HeadersFunction = () => ({ "Cache-Control": "no-store", "X-Robots-Tag": "noindex, nofollow", "X-Accel-Buffering": "no" });
 
+/** The modules' admin pages that take no parameters, in the order the site lists its modules. */
+const MODULE_PAGES: AdminNavEntry[] = MODULES.flatMap((m) => (m.pages ?? []).flatMap((p) => ("layout" in p || !p.admin || p.path.includes(":") ? [] : [{ to: `/admin/${p.path}`, label: p.nav ?? p.path }])));
+
 const nav = (): Array<{ group: string; items: AdminNavEntry[] }> => [
   {
     group: "内容",
@@ -41,6 +45,8 @@ const nav = (): Array<{ group: string; items: AdminNavEntry[] }> => [
       { to: "/admin/feedback", label: "反馈", count: "feedback", tone: "accent" },
     ],
   },
+  // The modules' own admin pages, listed by the names they give themselves (site/modules/index.ts).
+  ...(MODULE_PAGES.length ? [{ group: "模块", items: MODULE_PAGES }] : []),
   {
     group: "系统",
     items: [

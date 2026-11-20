@@ -3,12 +3,12 @@ import assert from "node:assert/strict";
 import { randomBytes } from "node:crypto";
 import { after, before, beforeEach, test } from "node:test";
 import Fastify from "fastify";
-import { ADMIN } from "@aihot/site";
-import { previewPrincipal } from "@aihot/backend/admin/preview";
-import { config } from "@aihot/backend/config";
-import { closeDb, sql } from "@aihot/backend/db";
-import { sha256 } from "@aihot/backend/lib/ids";
-import { endSession, passwordLogin, SESSION_COOKIE, sessionPrincipal } from "@aihot/backend/admin/auth";
+import { ADMIN } from "@design-space/site";
+import { previewPrincipal } from "@design-space/backend/admin/preview";
+import { config } from "@design-space/backend/config";
+import { closeDb, sql } from "@design-space/backend/db";
+import { sha256 } from "@design-space/backend/lib/ids";
+import { endSession, passwordLogin, SESSION_COOKIE, sessionPrincipal } from "@design-space/backend/admin/auth";
 import { adminHandler, registerAdminAuth } from "../apps/api/src/routes/admin-auth.ts";
 
 const T = tag();

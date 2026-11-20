@@ -6,21 +6,21 @@ import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { AsyncLocalStorage } from "node:async_hooks";
 import { createMcpHandler, McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod";
-import { DEPLOYMENT, POLICY, SITE } from "@aihot/site";
-import { PUBLIC_INTERFACE_VERSION } from "@aihot/contracts/http-policy";
-import { MCP_TOOL_NAMES as T, mcpToolName } from "@aihot/contracts/mcp";
-import { PUBLIC_API_CATEGORY_KEYS } from "@aihot/contracts/taxonomy";
-import { isValidDate } from "@aihot/contracts/time";
-import { config } from "@aihot/backend/config";
-import { cachedByKey } from "@aihot/backend/lib/cache";
-import { logError } from "@aihot/backend/lib/log-error";
-import { dailyAnswer, hotAnswer, latestAnswer, periodAnswer, searchAnswer, searchItems, storyAnswer } from "@aihot/backend/publication/agent";
-import { SELECTION } from "@aihot/industry/selection";
-import { v1Items } from "@aihot/backend/publication/v1";
-import { SearchBusyError } from "@aihot/backend/publication/pool";
-import { resolveStory, v1HotTopics, v1Story } from "@aihot/backend/publication/stories";
-import { dailyWithNotes, isPeriodKey, v1Period } from "@aihot/backend/publication/reports";
-import { serverModules } from "@aihot/backend/modules";
+import { DEPLOYMENT, POLICY, SITE } from "@design-space/site";
+import { PUBLIC_INTERFACE_VERSION } from "@design-space/contracts/http-policy";
+import { MCP_TOOL_NAMES as T, mcpToolName } from "@design-space/contracts/mcp";
+import { PUBLIC_API_CATEGORY_KEYS } from "@design-space/contracts/taxonomy";
+import { isValidDate } from "@design-space/contracts/time";
+import { config } from "@design-space/backend/config";
+import { cachedByKey } from "@design-space/backend/lib/cache";
+import { logError } from "@design-space/backend/lib/log-error";
+import { dailyAnswer, hotAnswer, latestAnswer, periodAnswer, searchAnswer, searchItems, storyAnswer } from "@design-space/backend/publication/agent";
+import { SELECTION } from "@design-space/industry/selection";
+import { v1Items } from "@design-space/backend/publication/v1";
+import { SearchBusyError } from "@design-space/backend/publication/pool";
+import { resolveStory, v1HotTopics, v1Story } from "@design-space/backend/publication/stories";
+import { dailyWithNotes, isPeriodKey, v1Period } from "@design-space/backend/publication/reports";
+import { serverModules } from "@design-space/backend/modules";
 
 /** What each tool is for, in the order the instructions name them; the modules' come last. */
 const USES = [

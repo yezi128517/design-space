@@ -1,11 +1,11 @@
 import { useLoaderData } from "react-router";
 import type { Route } from "./+types/report-latest";
-import { REPORT_NAMES, reportDateLabel, type ReportLatestPage } from "@aihot/contracts/site";
-import { REPORTS, SEO_TITLES, SITE, subjectAfter, withSubject } from "@aihot/site";
+import { REPORT_NAMES, reportDateLabel, type ReportLatestPage } from "@design-space/contracts/site";
+import { REPORTS, SEO_TITLES, SITE, subjectAfter, withSubject } from "@design-space/site";
 import { cachedPage, loadOr404 } from "../lib/api.server";
 import { pageReuse } from "../lib/page-reuse";
 import { breadcrumbLd, pageMeta, reportDescription, reportLd } from "../lib/seo";
-import { beijingDate } from "@aihot/contracts/time";
+import { beijingDate } from "@design-space/contracts/time";
 import { EmptyState } from "../components/ui/Page";
 import { ReportLayout } from "../features/report/ReportLayout";
 import { ReportPaper, reportOutline } from "../features/report/ReportPaper";

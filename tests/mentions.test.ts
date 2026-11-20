@@ -6,14 +6,14 @@ import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { after, before, test } from "node:test";
-import { closeDb, sql } from "@aihot/backend/db";
-import { installModules } from "@aihot/backend/modules";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { publishArticle } from "@aihot/backend/publication/publish";
-import { loadItemDetail } from "@aihot/backend/publication/detail";
-import { loadStoryDetail } from "@aihot/backend/publication/stories";
-import { loadReport } from "@aihot/backend/publication/reports";
-import { stopBoss } from "@aihot/backend/jobs/queue";
+import { closeDb, sql } from "@design-space/backend/db";
+import { installModules } from "@design-space/backend/modules";
+import { upsertMaterial } from "@design-space/backend/content/materials";
+import { publishArticle } from "@design-space/backend/publication/publish";
+import { loadItemDetail } from "@design-space/backend/publication/detail";
+import { loadStoryDetail } from "@design-space/backend/publication/stories";
+import { loadReport } from "@design-space/backend/publication/reports";
+import { stopBoss } from "@design-space/backend/jobs/queue";
 
 const T = tag();
 const source = `mentions-${T}`;
@@ -74,9 +74,9 @@ test("a report is sent the pages its lead and summaries name", async () => {
   const key = "2096-02-01";
   await sql`INSERT INTO reports (kind, key, window_start, window_end, content, generated_at)
     VALUES ('daily', ${key}, ${at}, ${at}, ${sql.json({
-      lead: { title: "英伟达发布新卡", leadParagraph: "英伟达发布新卡。" },
-      sections: [{ label: "模型", items: [{ itemId: id, title: "Dots 2 发布", summary: "Dots 2 上线。", sourceUrl: "https://example.com", sourceName: "Mention source" }] }],
+      lead: { title: "Figma 发布新插件", leadParagraph: "Figma 发布新插件。" },
+      sections: [{ label: "工具", items: [{ itemId: id, title: "Dots 2 发布", summary: "Dots 2 上线。", sourceUrl: "https://example.com", sourceName: "Mention source" }] }],
     } as never)}, ${at})`;
   const report = (await loadReport("daily", key))!;
-  assert.deepEqual(hrefs(report.mentions), ["/topics/nvidia", "/models/dots-2"]);
+  assert.deepEqual(hrefs(report.mentions), ["/topics/figma", "/models/dots-2"]);
 });

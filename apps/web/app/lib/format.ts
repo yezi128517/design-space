@@ -1,4 +1,4 @@
-import { beijingDate, beijingTime, beijingWeekday, monthDay as engineMonthDay } from "@aihot/contracts/time";
+import { beijingDate, beijingTime, beijingWeekday, monthDay as engineMonthDay } from "@design-space/contracts/time";
 
 /**
  * "9月28日" of a calendar date (YYYY-MM-DD). A day of another year than `now` (Beijing) carries its year, so an

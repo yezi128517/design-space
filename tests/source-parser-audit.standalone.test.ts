@@ -3,11 +3,11 @@
 import assert from "node:assert/strict";
 import http from "node:http";
 import { after, test } from "node:test";
-import { config } from "@aihot/backend/config";
-import { contentHash } from "@aihot/backend/content/materials";
-import { unsupportedConfig } from "@aihot/backend/sources/config-keys";
-import { fetchWebList } from "@aihot/backend/sources/web-list";
-import { parseLooseDate } from "@aihot/backend/sources/dates";
+import { config } from "@design-space/backend/config";
+import { contentHash } from "@design-space/backend/content/materials";
+import { unsupportedConfig } from "@design-space/backend/sources/config-keys";
+import { fetchWebList } from "@design-space/backend/sources/web-list";
+import { parseLooseDate } from "@design-space/backend/sources/dates";
 
 const section = (id: string, date: string, title: string, body: string) =>
   `<div class="intercom-interblocks-subheading3"><h3 id="${id}">${date}</h3></div>` +

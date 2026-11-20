@@ -2,15 +2,15 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode }
 import { IntentLink } from "../components/ui/IntentLink";
 import { Link, useLoaderData, useLocation } from "react-router";
 import type { Route } from "./+types/story";
-import { STORY_INDEX_MIN_SOURCES, type StoryDetail, type StoryReportView } from "@aihot/contracts/site";
-import { SITE } from "@aihot/site";
-import { linkMentions } from "@aihot/contracts/mentions";
-import { addressRuns } from "@aihot/contracts/addresses";
+import { STORY_INDEX_MIN_SOURCES, type StoryDetail, type StoryReportView } from "@design-space/contracts/site";
+import { SITE } from "@design-space/site";
+import { linkMentions } from "@design-space/contracts/mentions";
+import { addressRuns } from "@design-space/contracts/addresses";
 import { MentionText } from "../components/ui/MentionText";
 import { cachedPage, loadOr404 } from "../lib/api.server";
 import { pageReuse } from "../lib/page-reuse";
 import { breadcrumbLd, pageMeta, storyArticleLd, storyLd, titled } from "../lib/seo";
-import { beijingDate, beijingTime } from "@aihot/contracts/time";
+import { beijingDate, beijingTime } from "@design-space/contracts/time";
 import { byBeijingDay, monthDay, monthDayTime, relativeTime } from "../lib/format";
 import { useCurrentSection } from "../lib/motion";
 import { HeatChart } from "../features/story/HeatChart";
@@ -138,7 +138,7 @@ type Filter = "all" | "official" | "selected";
 type Order = "desc" | "asc";
 
 // The report filter and shared reading order, per history entry: back from a report restores the view.
-const viewCache = sessionCache<{ savedAt: number; filter: Filter; order: Order }>("aihot:story-view:", 30 * 60 * 1000);
+const viewCache = sessionCache<{ savedAt: number; filter: Filter; order: Order }>("designspace:story-view:", 30 * 60 * 1000);
 
 export default function StoryPage() {
   const { story } = useLoaderData<typeof loader>();

@@ -9,18 +9,18 @@
 import assert from "node:assert/strict";
 import { after, before, test } from "node:test";
 import * as cheerio from "cheerio";
-import type { SiteItemDetail, StoryDetail } from "@aihot/contracts/site";
-import { beijingDate } from "@aihot/contracts/time";
-import { ITEM_COPY, withSubject } from "@aihot/site";
+import type { SiteItemDetail, StoryDetail } from "@design-space/contracts/site";
+import { beijingDate } from "@design-space/contracts/time";
+import { ITEM_COPY, withSubject } from "@design-space/site";
 import { fakeApi, FIXTURE_AT, itemDetail, startWebServer, type WebServer } from "../apps/web/tests/web-server.ts";
 
-const agent = { slug: "agent", name: "Agent 智能体" };
+const agent = { slug: "agent-ux", name: "智能体与对话式界面" };
 const items: SiteItemDetail[] = [
   itemDetail({ id: "links-lead", title: "日报头条", topics: [agent], daily: { key: "2026-11-07", lead: true } }),
   itemDetail({ id: "links-entry", title: "日报里的一条", daily: { key: "2026-11-07", lead: false } }),
   itemDetail({ id: "links-none", title: "没进日报" }),
   // Tagged with a company its title does not name: that company's topic is the tag's, not the article's.
-  itemDetail({ id: "links-tags", title: "带标签", topics: [agent], tags: ["Agent", "OpenAI", "框架"], tagTopics: { Agent: "agent", OpenAI: "openai" } }),
+  itemDetail({ id: "links-tags", title: "带标签", topics: [agent], tags: ["Agent 交互", "OpenAI", "框架"], tagTopics: { "Agent 交互": "agent-ux", OpenAI: "openai" } }),
   itemDetail({ id: "links-story-indexable", title: "多报道单事实事件", story: { publicId: "links-this-year", title: "测试事件", indexable: true } }),
   itemDetail({ id: "links-story-single", title: "单报道事件", story: { publicId: "links-lone", title: "单报道", indexable: false } }),
 ];
@@ -40,8 +40,8 @@ before(async () => {
     if (url.pathname === "/api/site/pool") {
       return {
         filters: { channel: "all", category: null, tag: null, q: null, tab: "time" },
-        items: [{ id: "links-tags", title: "带标签", summary: "摘要", reason: null, source: { name: "Fixture" }, publishedAt: FIXTURE_AT, timelineAt: FIXTURE_AT, category: "ai-models", tags: ["Agent", "OpenAI", "框架"], score: 80, selected: true, channel: "news", x: null }],
-        tagTopics: { Agent: "agent", OpenAI: "openai" },
+        items: [{ id: "links-tags", title: "带标签", summary: "摘要", reason: null, source: { name: "Fixture" }, publishedAt: FIXTURE_AT, timelineAt: FIXTURE_AT, category: "design-tools", tags: ["Agent 交互", "OpenAI", "框架"], score: 80, selected: true, channel: "news", x: null }],
+        tagTopics: { "Agent 交互": "agent-ux", OpenAI: "openai" },
         page: 1, pageCount: 1, total: 1, todayCount: 1, freshness: FIXTURE_AT,
       };
     }
@@ -88,8 +88,8 @@ test("a tag that is a topic's own leads to the topic page, and not beside that t
   const $ = await page("/items/links-tags");
   const hrefs = (text: string) => $("a").filter((_, el) => $(el).text() === text).toArray().map((el) => $(el).attr("href"));
   // The rail and the phone chips alike.
-  assert.deepEqual(hrefs("Agent 智能体"), ["/topics/agent", "/topics/agent"]);
-  assert.deepEqual(hrefs("#Agent"), []);
+  assert.deepEqual(hrefs("智能体与对话式界面"), ["/topics/agent-ux", "/topics/agent-ux"]);
+  assert.deepEqual(hrefs("#Agent 交互"), []);
   assert.deepEqual(hrefs("#OpenAI"), ["/topics/openai", "/topics/openai"]);
   assert.deepEqual(hrefs("#框架"), [`/all?tag=${encodeURIComponent("框架")}`, `/all?tag=${encodeURIComponent("框架")}`]);
   assert.equal($("a[href^='/all?tag=Agent']").length, 0);
@@ -98,10 +98,10 @@ test("a tag that is a topic's own leads to the topic page, and not beside that t
   assert.ok($('a[href="/topics/openai"]').toArray().every((el) => !$(el).attr("rel")));
 
   const pool = await page("/all");
-  assert.equal(pool('a[href="/topics/agent"]').text(), "#Agent");
+  assert.equal(pool('a[href="/topics/agent-ux"]').text(), "#Agent 交互");
   assert.equal(pool('a[href="/topics/openai"]').text(), "#OpenAI");
   assert.equal(pool(`a[href="/all?tag=${encodeURIComponent("框架")}"]`).attr("rel"), "nofollow");
-  assert.equal(pool('a[href="/all?category=ai-models"]').first().attr("rel"), "nofollow");
+  assert.equal(pool('a[href="/all?category=design-tools"]').first().attr("rel"), "nofollow");
 });
 
 test("an article in an indexable event visibly links to the event page even without other facts; a single-report event does not", async () => {

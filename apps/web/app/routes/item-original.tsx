@@ -1,5 +1,5 @@
 import type { Route } from "./+types/item-original";
-import type { SiteItemDetail } from "@aihot/contracts/site";
+import type { SiteItemDetail } from "@design-space/contracts/site";
 import { cachedPage, loadOr404 } from "../lib/api.server";
 import { loadFollowups } from "../features/item/followups.server";
 import { pageReuse } from "../lib/page-reuse";
